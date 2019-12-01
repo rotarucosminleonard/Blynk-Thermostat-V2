@@ -1,6 +1,10 @@
 void checkInterval()
 {
-    //String currentTime = String(Hour) + ":" + String(Minute) + ":" + String(second());
+    Serial.println();
+    Serial.println("Printing the time before checking the itnerval:");
+    Serial.println(String(Hour) + ":" + String(Minute) + ":" + String(second()));
+    Serial.println();
+    
     //String currentDate = String(day()) + " " + month() + " " + year();
     //Interval = String( String(StartHour) + ":" + String(StartMinute) + " - " + String(StopHour) + ":" + String(StopMinute));
 //    Serial.print("Current time: " + String(currentTime));

@@ -45,22 +45,23 @@ Adafruit_BME680 bme; // I2C
 
 
 // Pins from the IO extender
-#define LEDpin 0
-#define LEFTpin 1
+#define LED_PIN 2           
+#define LEDpin 6
+#define LEFTpin 4
 bool prevLeftState;
-#define UPpin 2
+#define UPpin 3
 bool prevUpState;
-#define DOWNpin 3
+#define DOWNpin 2
 bool prevDownState;
-#define RIGHTpin 4
+#define RIGHTpin 1
 bool prevRightState;
-#define OKpin 5
+#define OKpin 0
 bool prevOkState;
-#define CANCELpin 6
+#define CANCELpin 5
 bool prevCancelState;
 
-#define RELAYpin 33
-
+#define RELAYoNpin 33
+#define RELAYoFFpin 13
 
 bool theLEDState;
 bool leftKey;
@@ -75,7 +76,7 @@ bool cancelKey;
 #define heartbeatVPin        V1   // used for hardware monitoring
 #define wifiSignalVPin       V2   // percentage of wifi strenght
 #define tempVPin             V3   // realtime temperature value
-#define humVPin              V4   // realtime humifity value
+#define humVPin              V4   // realtime humidity value
 #define pressureVPin         V5   // realtime pressure value
 #define gassVPin             V6   // realtime gass readings value
 #define airQuality           V7   // placeholder for air quality 
@@ -127,8 +128,14 @@ int counter = 0;
 signed short int rssi = 0;
 signed short int signalQuality = 0;
 
-char ssid[]            = "SSID";
-char pass[]            = "PASSWORD";
+// menu
+int position;
+bool menu;
+int value;
+bool save;
+
+char ssid[]            = "Home";
+char pass[]            = "PASS";
 char auth[]            = "AUTH";
 //char server[]          = "blynk-cloud.com";
 //char server[]          = IPAddress(192,168,1,3);
@@ -140,9 +147,9 @@ bool wifi = 0;
 bool server = 0;
 
 // If you dont want to use DHCP 
-IPAddress arduino_ip ( 192,  168,   1,  56);
-IPAddress dns_ip     ( 192,  168,   1,   1);
-IPAddress gateway_ip ( 192,  168,   1,   1);
+IPAddress arduino_ip ( 192,  168,   0,  100);
+IPAddress dns_ip     ( 192,  168,   0,   1);
+IPAddress gateway_ip ( 192,  168,   0,   1);
 IPAddress subnet_mask(255, 255, 255,   0);
 
 
@@ -176,7 +183,7 @@ bool GPSTrigger;
 bool GPSAutoOff;
 
 float tempset = 0.0; // 
-float tempdrop = 0;
+float tempdrop = 0.9;
 float tempset2;
 int tempsetaddress = 0;
 int scheduledaddress = 1;
@@ -188,15 +195,17 @@ bool interval;
 
 
 void setup() {
-  pinMode(RELAYpin, OUTPUT);     // Initialize the LED_BUILTIN pin as an output
+  pinMode(RELAYoNpin, OUTPUT); 
+  pinMode(RELAYoFFpin, OUTPUT); 
+  digitalWrite(RELAYoNpin, HIGH);
+  digitalWrite(RELAYoFFpin, HIGH);
   Serial.begin(115200);
   Serial.println();
 
-  rtc.begin();
   EEPROM.begin(512);
   tempset = EEPROM.read(tempsetaddress);
   scheduled = EEPROM.read(scheduledaddress);
-  
+  rtc.begin();  
   ucg.begin(UCG_FONT_MODE_TRANSPARENT);
   ucg.clearScreen();
   //ucg.undoRotate(); break;
@@ -207,7 +216,7 @@ void setup() {
   WiFi.setHostname(NAMEandVERSION);
   WiFi.mode(WIFI_STA);
   WiFi.config(arduino_ip, gateway_ip, subnet_mask);
-  Blynk.config(auth, IPAddress(192,168,1,3), port);  // I am using the local Server
+  Blynk.config(auth, IPAddress(192,168,0,3), port);  // I am using the local Server
 
   Wire.begin(SDA,SCL);
   mcp.begin();      // use default address 0
@@ -224,7 +233,7 @@ void setup() {
 //   rtc.set(0, 40, 18, 2, 6, 8, 19);
   // RTCLib::set(byte second, byte minute, byte hour, byte dayOfWeek, byte dayOfMonth, byte month, byte year)
   
-  
+  pinMode(LED_PIN, OUTPUT);
   mcp.pinMode(LEDpin, OUTPUT);
   mcp.pinMode(LEFTpin, INPUT);
   mcp.pinMode(UPpin, INPUT);
@@ -258,7 +267,7 @@ void setup() {
   bme.setPressureOversampling(BME680_OS_4X);
   bme.setIIRFilterSize(BME680_FILTER_SIZE_3);
   bme.setGasHeater(320, 150); // 320*C for 150 ms
-
+  ReadBME680(); 
   CheckConnection();// It needs to run first to initiate the connection.Same function works for checking the connection!
   timer.setInterval(22000L, CheckConnection); 
   //  timer.setInterval(1000L, myTimerEvent);    
@@ -301,6 +310,9 @@ void PeriodicSync()
     // Push to the server
     Blynk.virtualWrite(tempVPin, t);
     Blynk.virtualWrite(humVPin, h);
+    
+    Blynk.virtualWrite(tempSetVPin, tempset);
+    
     Blynk.virtualWrite(pressureVPin, p);
     Blynk.virtualWrite(gassVPin, g);
 //    Blynk.virtualWrite(tempSetVPin, tempset); //only after the local storage in the memory
@@ -319,11 +331,11 @@ void BlinkTheLed()
   Serial.println("The LED");
   if (theLEDState == 1) {
     // btnState is used to avoid sequential toggles
-      mcp.digitalWrite(LEDpin, HIGH);
+      digitalWrite(LED_PIN, LOW);
       theLEDState = 0;
     }
   else {
-    mcp.digitalWrite(LEDpin, LOW);
+    digitalWrite(LED_PIN, HIGH);
     theLEDState = 1;
   }
 }

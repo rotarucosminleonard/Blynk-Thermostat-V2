@@ -17,7 +17,7 @@ void HeatingLogic()
       else {
         HeatOff();
         //STOPPED = 0; 
-        Serial.println("Heating was turned off because the interval is passed");
+        Serial.println("Heating was turned off because the interval passed");
         yield();
       }
     }
@@ -49,10 +49,12 @@ void HeatingLogic()
     }    
   }
   else {     //not connected
+    Serial.println("Not Connected. Scheduling wont work for now.");
     if (scheduled == 1){
       HeatOff();
     }
     else {
+      Serial.println("It's offline, but it works on manual.");
       TempCompare();  
     }
   }
@@ -112,7 +114,15 @@ void TempCompare()
 
 void HeatOn() 
 {
-  digitalWrite(RELAYpin, LOW);
+  digitalWrite(RELAYoNpin, LOW);
+  delay(50);
+  digitalWrite(RELAYoNpin, HIGH);
+  delay(100);
+  digitalWrite(RELAYoNpin, LOW);
+  delay(50);
+  digitalWrite(RELAYoNpin, HIGH);
+  mcp.digitalWrite(LEDpin, LOW);
+  
   if (Blynk.connected())
   {
     ledHeatingStatus.on();    
@@ -124,7 +134,15 @@ void HeatOn()
 
 void HeatOff() 
 {
-  digitalWrite(RELAYpin, HIGH);
+  //digitalWrite(RELAYpin, HIGH);
+  digitalWrite(RELAYoFFpin, LOW);
+  delay(50);
+  digitalWrite(RELAYoFFpin, HIGH);
+  delay(100);
+  digitalWrite(RELAYoFFpin, LOW);
+  delay(50);
+  digitalWrite(RELAYoFFpin, HIGH);
+  mcp.digitalWrite(LEDpin, HIGH);
   if (Blynk.connected())
   {
     ledHeatingStatus.off();

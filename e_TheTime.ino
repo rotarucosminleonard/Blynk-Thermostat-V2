@@ -14,6 +14,8 @@ void OfflineTime()
   Serial.print("/");
   Serial.print(OfflineRTC.year+2000, DEC);
   Serial.print(" ");
+  Hour = OfflineRTC.hour;
+  Minute = OfflineRTC.minute;
   switch (OfflineRTC.dayOfWeek)// Friendly printout the weekday
   {
     case MON:
@@ -43,30 +45,29 @@ void OfflineTime()
 
 void OnlineTime()
 {
-  // You can call hour(), minute(), ... at any time
-  // Please see Time library examples for details
-  Serial.println("Online RTC");
-  String currentTime = String(hour()) + ":" + minute() + ":" + second();
-  String currentDate = String(day()) + " " + month() + " " + year();
-  Serial.println("Weekday: " + String(weekday()));
-  Serial.print("Current time: ");
-  Serial.print(currentTime);
-  Serial.print(" ");
-  Serial.print(currentDate);
-  Serial.println();
-
-  // Send time to the App
-  Blynk.virtualWrite(V1, currentTime);
-  // Send date to the App
-  Blynk.virtualWrite(V2, currentDate);
+  if(!Blynk.connected()){
+    // You can call hour(), minute(), ... at any time
+    // Please see Time library examples for details
+    Serial.println("Online RTC");
+    String currentTime = String(hour()) + ":" + minute() + ":" + second();
+    String currentDate = String(day()) + " " + month() + " " + year();
+    Serial.println("Weekday: " + String(weekday()));
+    Serial.print("Current time: ");
+    Serial.print(currentTime);
+    Serial.print(" ");
+    Serial.print(currentDate);
+    Serial.println();
+    //    // Send time to the App
+    //    Blynk.virtualWrite(V1, currentTime);
+    //    // Send date to the App
+    //    Blynk.virtualWrite(V2, currentDate);
+  }  
 }
 
 void syncTheTime()
 {
   OfflineRTC.fillByYMD(year(),month(),day());//Jan 19,2013
   OfflineRTC.fillByHMS(hour(),minute(),second());//15:28 30"
-  //OfflineRTC.fillDayOfWeek(SAT);//Saturday
-  //weekday();
   switch (weekday())// Friendly printout the weekday
     {
       case 2:
