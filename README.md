@@ -20,5 +20,6 @@ Libraries required:
 - Blynk: http://help.blynk.cc/en/articles/512105-how-to-install-blynk-library-for-arduino-ide
 - Ucglib: https://github.com/olikraus/ucglib
 - Adafruit Unified Sensor: https://github.com/adafruit/Adafruit_Sensor
-- Adafruit BME680 - https://github.com/adafruit/Adafruit_BME680 ( also recommended BME280) 
-- Adafruit MCp23017 - https://github.com/adafruit/Adafruit-MCP23017-Arduino-Library
+- Adafruit BME680: https://github.com/adafruit/Adafruit_BME680 ( also recommended BME280) 
+- Adafruit MCp23017: https://github.com/adafruit/Adafruit-MCP23017-Arduino-Library
+- Arduino Time Library: https://github.com/PaulStoffregen/Time
