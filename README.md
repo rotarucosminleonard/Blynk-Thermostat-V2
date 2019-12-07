@@ -10,7 +10,7 @@ The hardware used:
 - 433 Mhz Relay Module
 
 # Blynk-Thermostat-V2
-A smarter version of a thermostat that can work and be fully programmed online or offline. It will store the required settings and inputs like temperature set, operating mode, the time and the time intervals required for scheduling in order to work offline when the connection to the server drops. It will be able to recover it when its available again. The output command for the heating device can be adjusted for the needs. I am currently using 433mhz modules from ebay for wireless transmission.
+A smarter version of a thermostat that can work and be fully programmed online or offline. It will store the required settings and inputs like temperature set, operating mode, the time and the time intervals required for scheduling in order to work offline when the connection to the server drops. It will be able to recover it when its available again. The output command for the heating device can be adjusted for the needs. I am currently using 433mhz modules from ebay for wireless transmission. The local time is updated from the server automatically.
 
 About the project:
 + The ESP32 works using the Blynk Platform and it displays the data on a LCD colour display (ST7735)  using the UCGLIB library. 
@@ -26,10 +26,11 @@ Working:
 - Wifi Signal
 - Local temperature as a refference
 
-Not working:
+Not working yet:
 - Scheduling - I'm working on a new scheduling system that will allow different hour intervals for each day of the week.
-- No hardware menu implemented
+- No hardware menu implemented at all
 - Multiple temperature inputs from different sensors
+
 
 ESP32 (install board)- https://github.com/espressif/arduino-esp32/blob/master/docs/arduino-ide/boards_manager.md
 
