@@ -27,7 +27,7 @@ Working:
 - Local temperature as a refference
 
 Not working yet:
-- Scheduling - I'm working on a new scheduling system that will allow different hour intervals for each day of the week.
+- Scheduling - I'm working on a new scheduling system that will allow different hour intervals for each day of the week. Heating can start 2 hours earlier before arrival, but after that, during the scheduled time it can stop the heating (if desired) when you leave the home (eg, shopping). 
 - No hardware menu implemented at all
 - Multiple temperature inputs from different sensors
 
