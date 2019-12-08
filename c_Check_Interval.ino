@@ -1,7 +1,11 @@
-void checkInterval()
+void checkTimeInterval()
 {
+    //Check what day it is
+    
+    Hour = OfflineRTC.hour;
+    Minute = OfflineRTC.minute;
     Serial.println();
-    Serial.println("Printing the time before checking the itnerval:");
+    Serial.print("Printing the time before checking the itnerval:");
     Serial.println(String(Hour) + ":" + String(Minute) + ":" + String(second()));
     Serial.println();
     
@@ -163,125 +167,4 @@ void checkInterval()
       ledInterval.off();
     }
   }
-}
-
-BLYNK_WRITE(timeInterval1VPin) {    // time interval setup !
-  TimeInputParam t(param);
-  // Process start time
-
-  if (t.hasStartTime())
-  {
-    StartTime = 1;
-    Serial.println(String("Start: ") +
-                   t.getStartHour() + ":" +
-                   t.getStartMinute() + ":" +
-                   t.getStartSecond());
-    StartHour = t.getStartHour();  
-    StartMinute = t.getStartMinute();
-  }
-  else if (t.isStartSunrise())
-  {
-    Serial.println("Start at sunrise");
-  }
-  else if (t.isStartSunset())
-  {
-    Serial.println("Start at sunset");
-  }
-  else
-  {
-    StartTime = 0;
-  }
-
-  // Process stop time
-
-  if (t.hasStopTime())
-  {
-    StopTime = 1;
-    Serial.println(String("Stop: ") +
-                   t.getStopHour() + ":" +
-                   t.getStopMinute() + ":" +
-                   t.getStopSecond());
-    StopHour = t.getStopHour();  
-    StopMinute = t.getStopMinute(); 
-  }
-  else if (t.isStopSunrise())
-  {
-    Serial.println("Stop at sunrise");
-  }
-  else if (t.isStopSunset())
-  {
-    Serial.println("Stop at sunset");
-  }
-  else
-  {
-    StopTime = 0;
-  }
-
-  // Process timezone
-  // Timezone is already added to start/stop time
-//
-//  Serial.println(String("Time zone: ") + t.getTZ());
-//
-//  // Get timezone offset (in seconds)
-//  Serial.println(String("Time zone offset: ") + t.getTZ_Offset());
-
-  // Process weekdays (1. Mon, 2. Tue, 3. Wed, ...)
-
-  for (int i = 1; i <= 7; i++) {
-    if (t.isWeekdaySelected(i)) {
-      //Serial.println(String("Day ") + i + " is selected");
-    }
-      if (i == 1 && t.isWeekdaySelected(i) )
-      {
-        Mo = 1;
-      }
-      else if (i == 1 && !t.isWeekdaySelected(i) ){
-        Mo = 0;
-      }
-      if (i == 2 && t.isWeekdaySelected(i))
-      {
-        Tu = 1;
-      }
-      else if (i == 2 && !t.isWeekdaySelected(i)){
-        Tu = 0;
-      }
-      if (i == 3 && t.isWeekdaySelected(i))
-      {
-        We = 1;
-      }
-      else if (i == 3 && !t.isWeekdaySelected(i)){
-        We = 0;
-      }
-      if (i == 4 && t.isWeekdaySelected(i))
-      {
-        Th = 1;
-      }
-      else if (i == 4 && !t.isWeekdaySelected(i)){
-        Th = 0;
-      }
-      if (i == 5 && t.isWeekdaySelected(i))
-      {
-        Fr = 1;
-      }
-      else if(i == 5 && !t.isWeekdaySelected(i)){
-        Fr = 0;
-      }
-      if (i == 6 && t.isWeekdaySelected(i))
-      {
-        Sa = 1;
-      }
-      else if(i == 6 && !t.isWeekdaySelected(i)){
-        Sa = 0;
-      }
-      if (i == 7 && t.isWeekdaySelected(i))
-      {
-        Su = 1;
-      }
-      else if (i == 7 && !t.isWeekdaySelected(i)){
-        Su = 0;
-      }
-  }
-  // If there is no scheduled day selected, then all are scheduled because days scheduling can be deactivate through the widget
-//  Serial.println(String(Mo) + " , " + String(Tu) + " , " + String(We) + " , " + String(Th) + " , " + String(Fr) + " , " + String(Sa) + " , " + String(Su) );
-//  Serial.println();
 }

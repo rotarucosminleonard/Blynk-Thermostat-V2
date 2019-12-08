@@ -1,4 +1,4 @@
-#define NAMEandVERSION "ESP32_Thermostat.h"
+#define NAMEandVERSION "ESP32_Thermostat_0.73"
 /*
  Basic example of esp32 + bmp280 + ST7735 + MCP2301
  */
@@ -28,8 +28,9 @@
 #include "DS1307.h"
 DS1307 OfflineRTC;//define a object of DS1307 class
 
+#include <TimeLib.h>
 BlynkTimer timer;
-WidgetRTC rtc;
+WidgetRTC   OnlineRTC;
 WidgetTerminal terminal(V1);
 
 
@@ -90,9 +91,15 @@ WidgetLED     ledGPSTrigger(V33);
 // These are specific to this thermostat
 
 #define tempSetVPin         V10
-#define timeInterval1VPin   V11
-#define timeInterval2VPin   V12
-#define timeInterval3VPin   V13
+#define timeInterval1VPin   V21 // Moday
+#define timeInterval2VPin   V22 // Tuesday
+#define timeInterval3VPin   V23 // Wednesday
+#define timeInterval4VPin   V24 // Thursday
+#define timeInterval5VPin   V25 // Friday
+#define timeInterval6VPin   V26 // Saturday
+#define timeInterval7VPin   V27 // Sunday
+
+
 #define tempSetControlVPin  V14
 #define setModeVPin         V15 // manual vs scheduled interval
 #define referenceTempVPin   V16
@@ -134,12 +141,12 @@ bool menu;
 int value;
 bool save;
 
-char ssid[]            = "Home";
-char pass[]            = "PASS";
+char ssid[]            = "SSID";
+char pass[]            = "pass";
 char auth[]            = "AUTH";
 //char server[]          = "blynk-cloud.com";
 //char server[]          = IPAddress(192,168,1,3);
-unsigned int port      = 1234; //use your own port of the server
+unsigned int port      = 8441; //use your own port of the server
 
 bool on = 0;
 bool online = 0;
@@ -147,7 +154,7 @@ bool wifi = 0;
 bool server = 0;
 
 // If you dont want to use DHCP 
-IPAddress arduino_ip ( 192,  168,   0,  100);
+IPAddress arduino_ip ( 192,  168,   0,  56);
 IPAddress dns_ip     ( 192,  168,   0,   1);
 IPAddress gateway_ip ( 192,  168,   0,   1);
 IPAddress subnet_mask(255, 255, 255,   0);
@@ -169,10 +176,12 @@ bool Sa = 0;
 bool Su = 0;
 
 
+bool onlinetimechk; // wont let the time synk unless the online time got updated
+
 bool StartTime = 0;
 bool StopTime = 0;
 
-float t = 0;
+float temp = 0;
 float h = 0;
 float p = 0;
 float g = 0;
@@ -182,12 +191,15 @@ bool scheduled;
 bool GPSTrigger;
 bool GPSAutoOff;
 
-float tempset = 0.0; // 
-float tempdrop = 0.9;
-float tempset2;
+float tempset = 0.0; // realtime temperature
+float tempdrop = 0.6;    // temperature difference required to start the heating again
+float tempset2; // temperature at the moment of starging the heating
+float referenceTemp = 0;
+
+// EEPROM adreses
 int tempsetaddress = 0;
 int scheduledaddress = 1;
-float referenceTemp = 0;
+int GPSAutoOffaddress = 2;
 
 bool HEATING;
 bool STOPPED;
@@ -205,7 +217,6 @@ void setup() {
   EEPROM.begin(512);
   tempset = EEPROM.read(tempsetaddress);
   scheduled = EEPROM.read(scheduledaddress);
-  rtc.begin();  
   ucg.begin(UCG_FONT_MODE_TRANSPARENT);
   ucg.clearScreen();
   //ucg.undoRotate(); break;
@@ -275,6 +286,7 @@ void setup() {
   timer.setInterval(5000L, BlinkTheLed);  
   timer.setInterval(4000L, mainDisplay);     
   timer.setInterval(5000L,  OfflineTime);
+  timer.setInterval(5000L,  OnlineTime);
   timer.setInterval(8000L, PeriodicSync);
   timer.setInterval(20000L, HeatingLogic);
 }
@@ -289,18 +301,21 @@ void loop() {
 
 
 BLYNK_CONNECTED() {
-  // Synchronize time on connection
-  rtc.begin();
-  delay(100);
-  OnlineTime();
-  delay(100);
-  OnlineTime();
-  syncTheTime();
+  OnlineRTC.begin();
+  Serial.println("Got connection to the server. Doing some sync...");
   Blynk.virtualWrite(tempSetVPin, tempset);// update the local tempset TO server
   Blynk.syncVirtual(timeInterval1VPin);
   Blynk.syncVirtual(geofenceSwitchVPin);
   Blynk.syncVirtual(locationVPin);
   Blynk.syncVirtual(setModeVPin);
+    // Synchronize time on connection
+//  OfflineTime();
+//  delay(100);
+//  OfflineTime();
+//  delay(100);
+  OnlineTime();
+  OfflineTime();
+  syncTheTime();
 }
 
 void PeriodicSync()
@@ -308,7 +323,7 @@ void PeriodicSync()
   if(Blynk.connected())
   {
     // Push to the server
-    Blynk.virtualWrite(tempVPin, t);
+    Blynk.virtualWrite(tempVPin, temp);
     Blynk.virtualWrite(humVPin, h);
     
     Blynk.virtualWrite(tempSetVPin, tempset);
@@ -328,7 +343,7 @@ void PeriodicSync()
 
 void BlinkTheLed()
 {
-  Serial.println("The LED");
+//  Serial.println("The LED");
   if (theLEDState == 1) {
     // btnState is used to avoid sequential toggles
       digitalWrite(LED_PIN, LOW);
@@ -344,7 +359,7 @@ void BlinkTheLed()
 void signalStrength()
 {
   if (WiFi.status() != WL_CONNECTED) { 
-    Serial.println("Couldn't get a wifi connection");
+    Serial.println("No WiFi connection yet!");
   } 
   // if you are connected, print out info about the connection:
   else {
@@ -366,9 +381,9 @@ void ReadBME680()
     return;
   }
 
-  t = (bme.temperature);
+  temp = (bme.temperature);
   p = (bme.pressure / 100.0);
   h = (bme.humidity);
   g = (bme.gas_resistance / 1000.0);
-  p = (bme.readAltitude(SEALEVELPRESSURE_HPA));
+  a = (bme.readAltitude(SEALEVELPRESSURE_HPA));
 }

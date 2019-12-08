@@ -1,3 +1,5 @@
+// Processing the data from the widgets when it gets received
+
 BLYNK_WRITE(setModeVPin)   // ON 1 = scheduled   - OFF 0 = manual(check temperature allways)
 { 
   //restoring int value
@@ -13,7 +15,8 @@ BLYNK_WRITE(tempSetVPin)
 {
   //restoring the value as it is updated on the server
   tempset = param.asFloat();
- 
+  EEPROM.write(tempsetaddress, tempset);
+  EEPROM.commit();
   Serial.println("tempset updated");
   yield();
 }
@@ -34,6 +37,8 @@ BLYNK_WRITE(geofenceSwitchVPin)
     ledGPSAutoOff.off();
   }
   yield();
+  EEPROM.write(GPSAutoOffaddress, GPSAutoOff);
+  EEPROM.commit();
 }
 
 
@@ -52,4 +57,58 @@ BLYNK_WRITE(locationVPin)
     ledGPSTrigger.off();
   }
   yield();
+}
+
+
+BLYNK_WRITE(timeInterval1VPin) {    // time interval setup for Monday
+  // Process start time
+  TimeInputParam t(param);
+  if (t.hasStartTime())
+  {
+    StartTime = 1;
+    Serial.println(String("Start: ") +
+                   t.getStartHour() + ":" +
+                   t.getStartMinute() + ":" +
+                   t.getStartSecond());
+    StartHour = t.getStartHour();  
+    StartMinute = t.getStartMinute();
+  }
+  else if (t.isStartSunrise())
+  {
+    Serial.println("Start at sunrise");
+  }
+  else if (t.isStartSunset())
+  {
+    Serial.println("Start at sunset");
+  }
+  else
+  {
+    StartTime = 0;
+  }
+
+  // Process stop time
+
+  if (t.hasStopTime())
+  {
+    StopTime = 1;
+    Serial.println(String("Stop: ") +
+                   t.getStopHour() + ":" +
+                   t.getStopMinute() + ":" +
+                   t.getStopSecond());
+    StopHour = t.getStopHour();  
+    StopMinute = t.getStopMinute(); 
+  }
+  else if (t.isStopSunrise())
+  {
+    Serial.println("Stop at sunrise");
+  }
+  else if (t.isStopSunset())
+  {
+    Serial.println("Stop at sunset");
+  }
+  else
+  {
+    StopTime = 0;
+  }
+
 }

@@ -283,16 +283,16 @@ void mainDisplay()
   
       ucg.setFont(ucg_font_profont29_mr);
       ucg.setColor(255, 55, 55);
-      if (t >= 10)
+      if (temp >= 10)
       {
         ucg.setPrintPos(5,54);    
       }
-      else if (t<10)
+      else if (temp<10)
       {
         ucg.setPrintPos(21,54);
        
       }
-      ucg.print(t,1);ucg.setFont(ucg_font_unifont_mr);ucg.setPrintPos(69,43);ucg.print("o");ucg.setPrintPos(80,54);ucg.setFont(ucg_font_profont29_mr);ucg.print("C");  //  Temperature
+      ucg.print(temp,1);ucg.setFont(ucg_font_unifont_mr);ucg.setPrintPos(69,43);ucg.print("o");ucg.setPrintPos(80,54);ucg.setFont(ucg_font_profont29_mr);ucg.print("C");  //  Temperature
   
       ucg.setFont(ucg_font_profont29_mr);
       ucg.setColor(45, 170, 255);

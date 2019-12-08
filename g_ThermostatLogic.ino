@@ -4,7 +4,7 @@ void HeatingLogic()
     if (scheduled == 1 ){
       Serial.println("By Time");
       Serial.println();
-      checkInterval();
+      checkTimeInterval();
       Serial.print("interval=");
       Serial.println(interval);
       Serial.println();
@@ -30,7 +30,7 @@ void HeatingLogic()
       else 
       { // GPSAutoOff is activated.When its on manual,keep heating only if you are at home
         //ledGPSAutoOff.on();
-        if (GPSTrigger == 0) //triggering when you leave the home
+        if (GPSTrigger == 1) //triggering when you leave the home
         {
           //ledGPSTrigger.on();
           TempCompare();  
@@ -64,7 +64,7 @@ void HeatingLogic()
 void TempCompare()
 {
   //tempToUse();
-  referenceTemp = t;
+  referenceTemp = temp;
   tempset2 = tempset-tempdrop;   
   // starding from
   // HEATING = 0

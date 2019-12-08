@@ -65,10 +65,14 @@ void keyboard()
     if (leftKey == LOW) {
       if (menu == 0){
         if (scheduled == 1){
-          scheduled = 0;            
+          scheduled = 0;
+          EEPROM.write(scheduledaddress, scheduled);
+          EEPROM.commit();            
         }
         else {
-          scheduled = 1;   
+          scheduled = 1;
+          EEPROM.write(scheduledaddress, scheduled);
+          EEPROM.commit();     
         }
       }
       else {
