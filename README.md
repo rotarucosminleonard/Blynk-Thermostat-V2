@@ -41,4 +41,4 @@ Libraries required:
 - Adafruit BME680: https://github.com/adafruit/Adafruit_BME680 ( also recommended BME280) 
 - Adafruit MCp23017: https://github.com/adafruit/Adafruit-MCP23017-Arduino-Library
 - Arduino Time Library: https://github.com/PaulStoffregen/Time
-- Grove - RTC : https://github.com/Seeed-Studio/RTC_DS1307
+- Grove - RTC DS1307 : https://github.com/Seeed-Studio/RTC_DS1307
