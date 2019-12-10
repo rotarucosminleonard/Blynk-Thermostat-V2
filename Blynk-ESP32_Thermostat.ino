@@ -1,7 +1,9 @@
-#define NAMEandVERSION "ESP32_Thermostat_0.73"
 /*
  Basic example of esp32 + bmp280 + ST7735 + MCP2301
  */
+
+#define NAMEandVERSION "ESP32_Thermostat V0.74"
+#include "config.h" // SSID,PASS, AUTH,serveraddr
 
 //#define BLYNK_DEBUG
 
@@ -44,6 +46,19 @@ Adafruit_BME680 bme; // I2C
 
 #define SEALEVELPRESSURE_HPA (1013.25)
 
+Ucglib_ST7735_18x128x160_HWSPI ucg(/*cd=*/ 25, /*cs=*/ 26, /*reset=*/ 27); 
+
+// Hardware SPI pins used by the display:
+// LED            = 3.3v
+// SCK            = 18
+// SDA = MOSI     = 23
+// A0             = 25
+// Reset          = 27
+// CS             = 26
+
+// Hardware I2C pins used by the rest of the devices:
+// SCL = 22
+// SDA = 21
 
 // Pins from the IO extender
 #define LED_PIN 2           
@@ -108,21 +123,6 @@ WidgetLED     ledGPSTrigger(V33);
 #define locationVPin        V19
 
 
-
-Ucglib_ST7735_18x128x160_HWSPI ucg(/*cd=*/ 25, /*cs=*/ 26, /*reset=*/ 27); 
-
-// Hardware SPI pins used by the display:
-// LED            = 3.3v
-// SCK            = 18
-// SDA = MOSI     = 23
-// A0             = 25
-// Reset          = 27
-// CS             = 26
-
-// Hardware I2C pins used by the rest of the devices:
-// SCL = 22
-// SDA = 21
-
 // BME reading variables
 short int delayaftergas = 0;
 short int readings = 0;
@@ -141,31 +141,66 @@ bool menu;
 int value;
 bool save;
 
-char ssid[]            = "SSID";
-char pass[]            = "pass";
-char auth[]            = "AUTH";
-//char server[]          = "blynk-cloud.com";
-//char server[]          = IPAddress(192,168,1,3);
-unsigned int port      = 8441; //use your own port of the server
+
 
 bool on = 0;
 bool online = 0;
 bool wifi = 0;
 bool server = 0;
 
-// If you dont want to use DHCP 
-IPAddress arduino_ip ( 192,  168,   0,  56);
-IPAddress dns_ip     ( 192,  168,   0,   1);
-IPAddress gateway_ip ( 192,  168,   0,   1);
-IPAddress subnet_mask(255, 255, 255,   0);
 
 
+//Widget Variables to Use
 int StartHour = 0;
 int StopHour = 0;
 int StartMinute = 0;
 int StopMinute = 0;
+
 int Hour = 0;
 int Minute = 0;
+
+//Monday Widged Variables to use
+int StartHour1 = 0;
+int StopHour1 = 0;
+int StartMinute1 = 0;
+int StopMinute1 = 0;
+
+//Tuesday Widged Variables to use
+int StartHour2 = 0;
+int StopHour2 = 0;
+int StartMinute2 = 0;
+int StopMinute2 = 0;
+
+//Wednesday  Widged Variables to use
+int StartHour3 = 0;
+int StopHour3 = 0;
+int StartMinute3 = 0;
+int StopMinute3 = 0;
+
+//Thursday Widged Variables to use
+int StartHour4 = 0;
+int StopHour4 = 0;
+int StartMinute4 = 0;
+int StopMinute4 = 0;
+
+//Friday Widged Variables to use
+int StartHour5 = 0;
+int StopHour5 = 0;
+int StartMinute5 = 0;
+int StopMinute5 = 0;
+
+//Saturday Widged Variables to use
+int StartHour6 = 0;
+int StopHour6 = 0;
+int StartMinute6 = 0;
+int StopMinute6 = 0;
+
+//Sunday Widged Variables to use
+int StartHour7 = 0;
+int StopHour7 = 0;
+int StartMinute7 = 0;
+int StopMinute7 = 0;
+
 
 bool Mo = 0;
 bool Tu = 0;
@@ -180,6 +215,7 @@ bool onlinetimechk; // wont let the time synk unless the online time got updated
 
 bool StartTime = 0;
 bool StopTime = 0;
+
 
 float temp = 0;
 float h = 0;
@@ -227,7 +263,8 @@ void setup() {
   WiFi.setHostname(NAMEandVERSION);
   WiFi.mode(WIFI_STA);
   WiFi.config(arduino_ip, gateway_ip, subnet_mask);
-  Blynk.config(auth, IPAddress(192,168,0,3), port);  // I am using the local Server
+  //Blynk.config(auth, IPAddress(192,168,0,3), port);  // I am using the local Server
+  Blynk.config(auth, serveraddr, port);  // I am using the local Server
 
   Wire.begin(SDA,SCL);
   mcp.begin();      // use default address 0

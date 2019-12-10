@@ -1,5 +1,3 @@
-
-
 void CheckConnection(){    // check every 11s if connected to Blynk server
   if(!Blynk.connected()){
     online = 0;

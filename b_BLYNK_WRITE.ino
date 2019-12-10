@@ -68,18 +68,9 @@ BLYNK_WRITE(timeInterval1VPin) {    // time interval setup for Monday
     StartTime = 1;
     Serial.println(String("Start: ") +
                    t.getStartHour() + ":" +
-                   t.getStartMinute() + ":" +
-                   t.getStartSecond());
+                   t.getStartMinute());
     StartHour = t.getStartHour();  
     StartMinute = t.getStartMinute();
-  }
-  else if (t.isStartSunrise())
-  {
-    Serial.println("Start at sunrise");
-  }
-  else if (t.isStartSunset())
-  {
-    Serial.println("Start at sunset");
   }
   else
   {
@@ -93,22 +84,13 @@ BLYNK_WRITE(timeInterval1VPin) {    // time interval setup for Monday
     StopTime = 1;
     Serial.println(String("Stop: ") +
                    t.getStopHour() + ":" +
-                   t.getStopMinute() + ":" +
-                   t.getStopSecond());
+                   t.getStopMinute());
     StopHour = t.getStopHour();  
     StopMinute = t.getStopMinute(); 
   }
-  else if (t.isStopSunrise())
-  {
-    Serial.println("Stop at sunrise");
-  }
-  else if (t.isStopSunset())
-  {
-    Serial.println("Stop at sunset");
-  }
+
   else
   {
     StopTime = 0;
   }
-
 }
