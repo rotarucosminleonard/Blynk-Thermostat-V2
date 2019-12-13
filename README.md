@@ -2,7 +2,7 @@ Warning: This is a work in progress and some of the features are not fully worki
 
 The hardware used:
 - ESP32 Dev Board
-- I2C BME680 for measuring the temp,hum, pressure and air quality - can be easily replaced by the cheaper BME280(temp,hum,pressure)
+- I2C BME680 for measuring the temp,hum, pressure and air quality - can be easily replaced by the cheaper <a href = "https://www.ebay.co.uk/itm/10DOF-I2C-SPI-MPU9250-BMP280-BME280-Kompass-Barom-for-Arduino-Raspberry-Pi-UK/192137880381?ssPageName=STRK%3AMEBIDX%3AIT&var=492050506785&_trksid=p2057872.m2749.l2649"> BME280(temp,hum,pressure)</a>
 - I2C MCP23017
 - I2C RTC DS13017z
 - SPI ST7735
