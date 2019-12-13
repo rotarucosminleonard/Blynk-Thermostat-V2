@@ -6,11 +6,11 @@ The hardware used:
 - I2C MCP23017
 - I2C RTC DS13017z
 - SPI ST7735
-- 433 Mhz transmitter 
-- 433 Mhz Relay Module
+- <a href ="https://www.ebay.co.uk/itm/Hot-Mini-Wireless-433Mhz-RF-Control-Remote-1527-Learning-Code-Transmitter-Module/232451380539?ssPageName=STRK%3AMEBIDX%3AIT&_trksid=p2057872.m2749.l2649"> 433 Mhz transmitter</a>
+- <a href= "https://www.ebay.co.uk/itm/DC-12V-1-Ch-433MHz-Wireless-Relay-RF-Remote-Control-Switch-Heterodyne-Receiver/292158576954?ssPageName=STRK%3AMEBIDX%3AIT&_trksid=p2057872.m2749.l2649"> 433 Mhz Relay Module</a> + <a href = "https://www.ebay.co.uk/itm/1-2-5PCS-AC110-220V-to-DC12V-Voltage-Power-Supply-Step-Down-Converter-Module/283386093098?ssPageName=STRK%3AMEBIDX%3AIT&_trksid=p2057872.m2749.l2649"> Power Module </a>
 
 # Blynk-Thermostat-V2
-A smarter version of a thermostat that can work and be fully programmed online or offline. It will store the required settings and inputs like temperature set, operating mode, the time and the time intervals required for scheduling in order to work offline when the connection to the server drops. It will be able to recover it when its available again. The output command for the heating device can be adjusted for the needs. I am currently using 433mhz modules from ebay for wireless transmission. The local time is updated from the server automatically.
+A smarter version of a thermostat that can work and be fully programmed online or offline. It will store the required settings and inputs like temperature set, operating mode, the time and the time intervals required for scheduling in order to work offline when the connection to the server drops. It will be able to recover it when its available again. The output command for the heating device can be adjusted for the needs. I am currently using 433mhz modules from ebay for wireless transmission to the heating system and the relay for trggering it. The local time is updated from the server automatically and kept by the rtc module.
 
 About the project:
 + The ESP32 works using the Blynk Platform and it displays the data on a LCD colour display (ST7735)  using the UCGLIB library. 
