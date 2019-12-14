@@ -65,7 +65,9 @@ void TempCompare()
 {
   //tempToUse();
   referenceTemp = temp;
-  tempset2 = tempset-tempdrop;   
+  tempset2 = tempset-tempdrop;
+  Serial.println("tempset2= "+ String(tempset2));
+  Serial.println("referenceTemp= "+ String(referenceTemp));    
   // starding from
   // HEATING = 0
   // STOPPED = 0
@@ -76,11 +78,11 @@ void TempCompare()
       //Blynk.setProperty(V5, "color", "purple");    
       Serial.println("Heating Just Started!");        
     }
-//    else {
-//      HeatOff();
-//      STOPPED = 1;
-//      Serial.println("Keep it OFF!");
-//    }
+    else {
+      HeatOff();
+      STOPPED = 1;
+      Serial.println("Keep it OFF!");
+    }
   }
           
   else if (HEATING == 1){

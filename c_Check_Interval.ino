@@ -4,8 +4,76 @@ void checkTimeInterval()
     
     Hour = OfflineRTC.hour;
     Minute = OfflineRTC.minute;
+
+    switch (OfflineRTC.dayOfWeek)// Friendly printout the weekday
+    {
+      case MON:
+        Serial.print("Using Monday scheduled interval");
+        StartHour = StartHour1;
+        StopHour = StopHour1;
+        StartMinute = StartMinute1;
+        StopMinute = StopMinute1;
+        StartTime = StartTime1;
+        StopTime = StopTime1;
+        break;
+      case TUE:
+        Serial.print("Using Tuesday scheduled interval");
+        StartHour = StartHour2;
+        StopHour = StopHour2;
+        StartMinute = StartMinute2;
+        StopMinute = StopMinute2;
+        StartTime = StartTime2;
+        StopTime = StopTime2;   
+        break;
+      case WED:
+        Serial.print("Using Wednesday scheduled interval");
+        StartHour = StartHour3;
+        StopHour = StopHour3;
+        StartMinute = StartMinute3;
+        StopMinute = StopMinute3;
+        StartTime = StartTime3;
+        StopTime = StopTime3;
+        break;
+      case THU:
+        Serial.print("Using Thursday scheduled interval: ");
+        StartHour = StartHour4;
+        StopHour = StopHour4;
+        StartMinute = StartMinute4;
+        StopMinute = StopMinute4;
+        StartTime = StartTime4;
+        StopTime = StopTime4;
+        break;
+      case FRI:
+        Serial.print("Using Friday scheduled interval: ");
+        StartHour = StartHour5;
+        StopHour = StopHour5;
+        StartMinute = StartMinute5;
+        StopMinute = StopMinute5;
+        StartTime = StartTime5;
+        StopTime = StopTime5;
+        break;
+      case SAT:
+        Serial.print("Using Saturday scheduled interval: ");
+        StartHour = StartHour6;
+        StopHour = StopHour6;
+        StartMinute = StartMinute6;
+        StopMinute = StopMinute6;
+        StartTime = StartTime6;
+        StopTime = StopTime6;
+        break;
+      case SUN:
+        Serial.print("Using Sundayay scheduled interval: ");
+        StartHour = StartHour7;
+        StopHour = StopHour7;
+        StartMinute = StartMinute7;
+        StopMinute = StopMinute7;
+        StartTime = StartTime7;
+        StopTime = StopTime7;
+        break;
+    }
+  
     Serial.println();
-    Serial.print("Printing the time before checking the itnerval:");
+    Serial.print("Printing the time before checking the interval:");
     Serial.println(String(Hour) + ":" + String(Minute) + ":" + String(second()));
     Serial.println();
     

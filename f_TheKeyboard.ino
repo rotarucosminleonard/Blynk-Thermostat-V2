@@ -105,6 +105,7 @@ void keyboard()
 
     }
     prevOkState = okKey;
+    mainDisplay();
   }
 
   cancelKey = mcp.digitalRead(CANCELpin);
@@ -112,10 +113,13 @@ void keyboard()
     if (cancelKey == LOW) {
       if (menu == 1){
         // back up a menu  
+        menu = 0;
       }
-
+    ucg.clearScreen();
+    mainDisplay();
     }
     prevCancelState = cancelKey;
+
   }
   
 }

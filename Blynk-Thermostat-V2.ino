@@ -1,8 +1,14 @@
 /*
- Basic example of esp32 + bmp280 + ST7735 + MCP2301
+  A smarter version of a thermostat that can work and be fully programmed online or offline. It will store the required 
+settings and inputs like temperature set, operating mode, the time and the time intervals required for scheduling
+in order to work offline when the connection to the server drops. It will be able to recover it when its available again. 
+The output command for the heating device can be adjusted for the needs. I am currently using 433mhz modules from ebay 
+for wireless transmission to the heating system and the relay for trggering it. The local time is updated from the server 
+automatically and kept by the rtc module.
  */
 
-#define NAMEandVERSION "ESP32_Thermostat V0.74"
+
+#define NAMEandVERSION "ESP32_Thermostat V2.75"
 #include "config.h" // SSID,PASS, AUTH,serveraddr
 
 //#define BLYNK_DEBUG
@@ -120,7 +126,7 @@ WidgetLED     ledGPSTrigger(V33);
 #define referenceTempVPin   V16
 #define referenceZoneVPin   V17 // temperature from which room
 #define geofenceSwitchVPin  V18 // geofence should work on manual or int
-#define locationVPin        V19
+#define locationVPin        V20 // Use the mirror instead. It gets received any time it is requested.
 
 
 // BME reading variables
@@ -128,8 +134,6 @@ short int delayaftergas = 0;
 short int readings = 0;
 bool timetomeasureGas = 0;
 bool gasjustmeasured = 0;
-
-
 
 int counter = 0;
 signed short int rssi = 0;
@@ -141,20 +145,18 @@ bool menu;
 int value;
 bool save;
 
-
-
 bool on = 0;
 bool online = 0;
 bool wifi = 0;
 bool server = 0;
-
-
 
 //Widget Variables to Use
 int StartHour = 0;
 int StopHour = 0;
 int StartMinute = 0;
 int StopMinute = 0;
+bool StartTime = 0;
+bool StopTime = 0;
 
 int Hour = 0;
 int Minute = 0;
@@ -164,43 +166,57 @@ int StartHour1 = 0;
 int StopHour1 = 0;
 int StartMinute1 = 0;
 int StopMinute1 = 0;
+bool StartTime1 = 0;
+bool StopTime1 = 0;
 
 //Tuesday Widged Variables to use
 int StartHour2 = 0;
 int StopHour2 = 0;
 int StartMinute2 = 0;
 int StopMinute2 = 0;
+bool StartTime2 = 0;
+bool StopTime2 = 0;
 
 //Wednesday  Widged Variables to use
 int StartHour3 = 0;
 int StopHour3 = 0;
 int StartMinute3 = 0;
 int StopMinute3 = 0;
+bool StartTime3 = 0;
+bool StopTime3 = 0;
 
 //Thursday Widged Variables to use
 int StartHour4 = 0;
 int StopHour4 = 0;
 int StartMinute4 = 0;
 int StopMinute4 = 0;
+bool StartTime4 = 0;
+bool StopTime4 = 0;
+
 
 //Friday Widged Variables to use
 int StartHour5 = 0;
 int StopHour5 = 0;
 int StartMinute5 = 0;
 int StopMinute5 = 0;
+bool StartTime5 = 0;
+bool StopTime5 = 0;
 
 //Saturday Widged Variables to use
 int StartHour6 = 0;
 int StopHour6 = 0;
 int StartMinute6 = 0;
 int StopMinute6 = 0;
+bool StartTime6 = 0;
+bool StopTime6 = 0;
 
 //Sunday Widged Variables to use
 int StartHour7 = 0;
 int StopHour7 = 0;
 int StartMinute7 = 0;
 int StopMinute7 = 0;
-
+bool StartTime7 = 0;
+bool StopTime7 = 0;
 
 bool Mo = 0;
 bool Tu = 0;
@@ -212,10 +228,6 @@ bool Su = 0;
 
 
 bool onlinetimechk; // wont let the time synk unless the online time got updated
-
-bool StartTime = 0;
-bool StopTime = 0;
-
 
 float temp = 0;
 float h = 0;
@@ -319,11 +331,11 @@ void setup() {
   CheckConnection();// It needs to run first to initiate the connection.Same function works for checking the connection!
   timer.setInterval(22000L, CheckConnection); 
   //  timer.setInterval(1000L, myTimerEvent);    
-  timer.setInterval(20000L, ReadBME680);
+  timer.setInterval(10100L, ReadBME680);
   timer.setInterval(5000L, BlinkTheLed);  
   timer.setInterval(4000L, mainDisplay);     
-  timer.setInterval(5000L,  OfflineTime);
-  timer.setInterval(5000L,  OnlineTime);
+  timer.setInterval(100000L,  OfflineTime);
+  timer.setInterval(100000L,  OnlineTime);
   timer.setInterval(8000L, PeriodicSync);
   timer.setInterval(20000L, HeatingLogic);
 }
@@ -341,7 +353,7 @@ BLYNK_CONNECTED() {
   OnlineRTC.begin();
   Serial.println("Got connection to the server. Doing some sync...");
   Blynk.virtualWrite(tempSetVPin, tempset);// update the local tempset TO server
-  Blynk.syncVirtual(timeInterval1VPin);
+  //Blynk.syncVirtual(timeInterval1VPin);
   Blynk.syncVirtual(geofenceSwitchVPin);
   Blynk.syncVirtual(locationVPin);
   Blynk.syncVirtual(setModeVPin);
@@ -353,12 +365,20 @@ BLYNK_CONNECTED() {
   OnlineTime();
   OfflineTime();
   syncTheTime();
+  Blynk.syncVirtual(timeInterval1VPin);
+  Blynk.syncVirtual(timeInterval2VPin);
+  Blynk.syncVirtual(timeInterval3VPin);
+  Blynk.syncVirtual(timeInterval4VPin);
+  Blynk.syncVirtual(timeInterval5VPin);
+  Blynk.syncVirtual(timeInterval6VPin);
+  Blynk.syncVirtual(timeInterval7VPin);
 }
 
 void PeriodicSync()
 {
   if(Blynk.connected())
   {
+    Serial.println("Periodic Sync...");
     // Push to the server
     Blynk.virtualWrite(tempVPin, temp);
     Blynk.virtualWrite(humVPin, h);
@@ -371,9 +391,9 @@ void PeriodicSync()
     Blynk.virtualWrite(wifiSignalVPin, signalQuality);
     Blynk.virtualWrite(referenceTempVPin, referenceTemp);// reference temperature
     // Get from the server
-    Blynk.syncVirtual(timeInterval1VPin);// scheduled interval 1
-    Blynk.syncVirtual(timeInterval2VPin);// scheduled interval 2 
-    Blynk.syncVirtual(timeInterval3VPin);// scheduled interval 3  
+//    Blynk.syncVirtual(timeInterval1VPin);// scheduled interval 1
+//    Blynk.syncVirtual(timeInterval2VPin);// scheduled interval 2 
+//    Blynk.syncVirtual(timeInterval3VPin);// scheduled interval 3  
   }
 }
 
@@ -405,7 +425,7 @@ void signalStrength()
   Serial.print("RSSI:");
   Serial.println(rssi); // -90 the worst ~ -30 the best
   signalQuality = ((1 - ( (-30) - float(rssi) ) / 70) * 100) ;
-  Serial.print("Signall Quality: ");
+  Serial.print("Signal Quality: ");
   Serial.println(signalQuality);
   }  
 }

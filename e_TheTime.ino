@@ -2,7 +2,7 @@ void OfflineTime()
 {
   //The offline time gets used for the interval checks and it gets updated when the mcu gets connected to the server
   
-  Serial.println("Offline RTC:");
+  Serial.print("Offline RTC:  ");
   OfflineRTC.getTime();
   Serial.print(OfflineRTC.hour, DEC);
   Serial.print(":");
@@ -42,6 +42,7 @@ void OfflineTime()
       break;
   }
   Serial.println(" ");
+  
   // These are required for Interval Check 
   Hour = OfflineRTC.hour;
   Minute = OfflineRTC.minute;
@@ -54,20 +55,49 @@ void OnlineTime()
     onlinetimechk = 1;
     // You can call hour(), minute(), ... at any time
     // Please see Time library examples for details
-    Serial.println("Online RTC:");
-    String currentTime = String(hour()) + ":" + String(minute()) + ":" + String(second());
-    String currentDate = String(day()) + " " + String(month()) + " " + String(year());
-    Serial.println("Weekday: " + String(weekday()));
-    Serial.print("Current time: ");
-    Serial.print(currentTime);
+
+//    Serial.println("Weekday: " + String(weekday()));
+    Serial.println(" ");
+    Serial.print("Online RTC:   ");
+    OfflineRTC.getTime();
+    Serial.print(String(hour()));
+    Serial.print(":");
+    Serial.print(String(minute()));
+    Serial.print(":");
+    Serial.print(String(second()));
+    Serial.print("  ");
+    Serial.print(String(month()));
+    Serial.print("/");
+    Serial.print(String(day()));
+    Serial.print("/");
+    Serial.print(String(year()));
     Serial.print(" ");
-    Serial.print(currentDate);
-    Serial.println();
-//        // Send time to the App
-//        Blynk.virtualWrite(V90, currentTime);
-//        // Send date to the App
-//        Blynk.virtualWrite(V91, currentDate);
-    Serial.println("Online Time Updated!");
+
+    switch (weekday())// Friendly printout the weekday
+    {
+      case 2:
+        Serial.print("MON");
+        break;
+      case 3:
+        Serial.print("TUE");
+        break;
+      case 4:
+        Serial.print("WED");
+        break;
+      case 5:
+        Serial.print("THU");
+        break;
+      case 6:
+        Serial.print("FRI");
+        break;
+      case 7:
+        Serial.print("SAT");
+        break;
+      case 1:
+        Serial.print("SUN");
+        break; 
+    }
+    
   } 
   else {
     onlinetimechk = 0;
@@ -105,6 +135,7 @@ void syncTheTime()
             break;
         }
       OfflineRTC.setTime();//write time to the RTC chip    
+      Serial.println("Time Sync done!");
   }
   else {
     Serial.println("Time not sicronised, Keep the local RTC untouched.");
