@@ -8,7 +8,7 @@ automatically and kept by the rtc module.
  */
 
 
-#define NAMEandVERSION "ESP32_Thermostat V2.75"
+#define NAMEandVERSION "ESP32_Thermostat V2.80"
 #include "config.h" // SSID,PASS, AUTH,serveraddr
 
 //#define BLYNK_DEBUG
@@ -150,6 +150,10 @@ bool online = 0;
 bool wifi = 0;
 bool server = 0;
 
+int today;
+int tomorrow;
+int yesterday;
+
 //Widget Variables to Use
 int StartHour = 0;
 int StopHour = 0;
@@ -157,9 +161,15 @@ int StartMinute = 0;
 int StopMinute = 0;
 bool StartTime = 0;
 bool StopTime = 0;
+int StartHourAddress = 6;
+int StopHourAddress = 7;
+int StartMinuteAddress = 8;
+int StopMinuteAddress = 9;
 
 int Hour = 0;
 int Minute = 0;
+int beforearrival = 0;
+bool preheating = 0; 
 
 //Monday Widged Variables to use
 int StartHour1 = 0;
@@ -168,6 +178,10 @@ int StartMinute1 = 0;
 int StopMinute1 = 0;
 bool StartTime1 = 0;
 bool StopTime1 = 0;
+int StartHour1Address = 10;
+int StopHour1Address = 11;
+int StartMinute1Address = 12;
+int StopMinute1Address = 13;
 
 //Tuesday Widged Variables to use
 int StartHour2 = 0;
@@ -176,6 +190,10 @@ int StartMinute2 = 0;
 int StopMinute2 = 0;
 bool StartTime2 = 0;
 bool StopTime2 = 0;
+int StartHour2Address = 20;
+int StopHour2Address = 21;
+int StartMinute2Address = 22;
+int StopMinute2Address = 23;
 
 //Wednesday  Widged Variables to use
 int StartHour3 = 0;
@@ -184,6 +202,10 @@ int StartMinute3 = 0;
 int StopMinute3 = 0;
 bool StartTime3 = 0;
 bool StopTime3 = 0;
+int StartHour3Address = 30;
+int StopHour3Address = 31;
+int StartMinute3Address = 32;
+int StopMinute3Address = 33;
 
 //Thursday Widged Variables to use
 int StartHour4 = 0;
@@ -192,7 +214,10 @@ int StartMinute4 = 0;
 int StopMinute4 = 0;
 bool StartTime4 = 0;
 bool StopTime4 = 0;
-
+int StartHour4Address = 40;
+int StopHour4Address = 41;
+int StartMinute4Address = 42;
+int StopMinute4Address = 43;
 
 //Friday Widged Variables to use
 int StartHour5 = 0;
@@ -201,6 +226,10 @@ int StartMinute5 = 0;
 int StopMinute5 = 0;
 bool StartTime5 = 0;
 bool StopTime5 = 0;
+int StartHour5Address = 50;
+int StopHour5Address = 51;
+int StartMinute5Address = 52;
+int StopMinute5Address = 53;
 
 //Saturday Widged Variables to use
 int StartHour6 = 0;
@@ -209,6 +238,10 @@ int StartMinute6 = 0;
 int StopMinute6 = 0;
 bool StartTime6 = 0;
 bool StopTime6 = 0;
+int StartHour6Address = 60;
+int StopHour6Address = 61;
+int StartMinute6Address = 62;
+int StopMinute6Address = 63;
 
 //Sunday Widged Variables to use
 int StartHour7 = 0;
@@ -217,6 +250,10 @@ int StartMinute7 = 0;
 int StopMinute7 = 0;
 bool StartTime7 = 0;
 bool StopTime7 = 0;
+int StartHour7Address = 70;
+int StopHour7Address = 71;
+int StartMinute7Address = 72;
+int StopMinute7Address = 73;
 
 bool Mo = 0;
 bool Tu = 0;
@@ -265,6 +302,46 @@ void setup() {
   EEPROM.begin(512);
   tempset = EEPROM.read(tempsetaddress);
   scheduled = EEPROM.read(scheduledaddress);
+
+
+  EEPROM.write(StopHour1Address, StopHour1);  
+  EEPROM.write(StopMinute1Address, StopMinute1);  
+
+  
+  StartHour1 = EEPROM.read(StartHour1Address);
+  StartHour2 = EEPROM.read(StartHour2Address);
+  StartHour3 = EEPROM.read(StartHour3Address);
+  StartHour4 = EEPROM.read(StartHour4Address);
+  StartHour5 = EEPROM.read(StartHour5Address);
+  StartHour6 = EEPROM.read(StartHour6Address);
+  StartHour7 = EEPROM.read(StartHour7Address); 
+   
+  StartMinute1 = EEPROM.read(StartMinute1Address);
+  StartMinute2 = EEPROM.read(StartMinute2Address);
+  StartMinute3 = EEPROM.read(StartMinute3Address);
+  StartMinute4 = EEPROM.read(StartMinute4Address);
+  StartMinute5 = EEPROM.read(StartMinute5Address);
+  StartMinute6 = EEPROM.read(StartMinute6Address);
+  StartMinute7 = EEPROM.read(StartMinute7Address); 
+
+  StopHour1 = EEPROM.read(StopHour1Address);
+  StopHour2 = EEPROM.read(StopHour2Address);
+  StopHour3 = EEPROM.read(StopHour3Address);
+  StopHour4 = EEPROM.read(StopHour4Address);
+  StopHour5 = EEPROM.read(StopHour5Address);
+  StopHour6 = EEPROM.read(StopHour6Address);
+  StopHour7 = EEPROM.read(StopHour7Address); 
+
+  StopMinute1 = EEPROM.read(StopMinute1Address);
+  StopMinute2 = EEPROM.read(StopMinute2Address);
+  StopMinute3 = EEPROM.read(StopMinute3Address);
+  StopMinute4 = EEPROM.read(StopMinute4Address);
+  StopMinute5 = EEPROM.read(StopMinute5Address);
+  StopMinute6 = EEPROM.read(StopMinute6Address);
+  StopMinute7 = EEPROM.read(StopMinute7Address); 
+  
+
+  delay(100);
   ucg.begin(UCG_FONT_MODE_TRANSPARENT);
   ucg.clearScreen();
   //ucg.undoRotate(); break;

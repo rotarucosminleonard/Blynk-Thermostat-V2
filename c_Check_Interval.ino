@@ -71,7 +71,15 @@ void checkTimeInterval()
         StopTime = StopTime7;
         break;
     }
-  
+
+    //With Geofence ON , the heating will work without someone else only for the forst 2 hours of the interval. Allows the heating to heat before you arrive home and to stop when you leave home during a scheduled day if the Geofence function is enabled.
+    beforearrival = Hour - StartHour;
+    if (beforearrival >= 2) {
+      preheating = 0;
+    }
+    else {
+      preheating = 1;
+    }
     Serial.println();
     Serial.print("Printing the time before checking the interval:");
     Serial.println(String(Hour) + ":" + String(Minute) + ":" + String(second()));

@@ -9,10 +9,37 @@ void HeatingLogic()
       Serial.println(interval);
       Serial.println();
       if (interval == 1 ) {
-        TempCompare();  // do the relay thing if the right time comes and the temperature thing
-        Serial.println("Heating was turned ON at the right time in interval");
-        //ledInterval.on();  
-        yield();     
+        if (GPSAutoOff == 0){
+          TempCompare();  // do the relay thing if the right time comes and the temperature thing
+          Serial.println("Heating was turned ON at the right time in interval");
+          //ledInterval.on();  
+          yield();  
+        }
+        else 
+        { 
+          if (GPSTrigger == 1) //triggering when you leave the home
+          {
+            TempCompare();  
+            Serial.println("Thermostat is running again because you are at home!");   
+            yield();
+          }
+          else
+          {
+            if (preheating == 0)
+            {
+              HeatOff();
+              //STOPPED = 0; 
+              Serial.println("Heating was turned off because it's set on scheduled, but there is nobody at home for more than 2 hours since the StartHour Begun");
+              yield();               
+            }
+            else {
+              TempCompare();  
+              Serial.println("Thermostat is running again because you are at home, or its less than 2 hours since the StartHour!");   
+              yield();              
+            }
+          }
+        }
+   
       } 
       else {
         HeatOff();

@@ -93,6 +93,12 @@ BLYNK_WRITE(timeInterval1VPin) {    // time interval setup for Monday
   {
     StopTime1 = 0;
   }
+  EEPROM.write(StartHour1Address, StartHour1);
+  EEPROM.write(StartMinute1Address, StartMinute1);
+  EEPROM.write(StopHour1Address, StopHour1);  
+  EEPROM.write(StopMinute1Address, StopMinute1);   
+  EEPROM.commit();
+  
 }
 
 BLYNK_WRITE(timeInterval2VPin) {    // time interval setup for Tuesday
@@ -128,6 +134,12 @@ BLYNK_WRITE(timeInterval2VPin) {    // time interval setup for Tuesday
   {
     StopTime2 = 0;
   }
+
+  EEPROM.write(StartHour2Address, StartHour2);
+  EEPROM.write(StartMinute2Address, StartMinute2);
+  EEPROM.write(StopHour2Address, StopHour2);  
+  EEPROM.write(StopMinute2Address, StopMinute2);   
+  EEPROM.commit();
 }
 
 BLYNK_WRITE(timeInterval3VPin) {    // time interval setup for Wednesday
@@ -163,6 +175,12 @@ BLYNK_WRITE(timeInterval3VPin) {    // time interval setup for Wednesday
   {
     StopTime3 = 0;
   }
+
+  EEPROM.write(StartHour3Address, StartHour3);
+  EEPROM.write(StartMinute3Address, StartMinute3);
+  EEPROM.write(StopHour3Address, StopHour3);  
+  EEPROM.write(StopMinute3Address, StopMinute3);   
+  EEPROM.commit();
 }
 
 BLYNK_WRITE(timeInterval4VPin) {    // time interval setup for Thursday
@@ -198,6 +216,11 @@ BLYNK_WRITE(timeInterval4VPin) {    // time interval setup for Thursday
   {
     StopTime4 = 0;
   }
+  EEPROM.write(StartHour4Address, StartHour4);
+  EEPROM.write(StartMinute4Address, StartMinute4);
+  EEPROM.write(StopHour4Address, StopHour4);  
+  EEPROM.write(StopMinute4Address, StopMinute4);   
+  EEPROM.commit();
 }
 
 BLYNK_WRITE(timeInterval5VPin) {    // time interval setup for Friday
@@ -233,6 +256,12 @@ BLYNK_WRITE(timeInterval5VPin) {    // time interval setup for Friday
   {
     StopTime5 = 0;
   }
+  
+  EEPROM.write(StartHour5Address, StartHour5);
+  EEPROM.write(StartMinute5Address, StartMinute5);
+  EEPROM.write(StopHour5Address, StopHour5);  
+  EEPROM.write(StopMinute5Address, StopMinute5);   
+  EEPROM.commit();
 }
 
 BLYNK_WRITE(timeInterval6VPin) {    // time interval setup for Saturday
@@ -268,6 +297,12 @@ BLYNK_WRITE(timeInterval6VPin) {    // time interval setup for Saturday
   {
     StopTime6 = 0;
   }
+
+  EEPROM.write(StartHour6Address, StartHour6);
+  EEPROM.write(StartMinute6Address, StartMinute6);
+  EEPROM.write(StopHour6Address, StopHour6);  
+  EEPROM.write(StopMinute6Address, StopMinute6);   
+  EEPROM.commit();
 }
 
 BLYNK_WRITE(timeInterval7VPin) {    // time interval setup for Sunday
@@ -303,4 +338,9 @@ BLYNK_WRITE(timeInterval7VPin) {    // time interval setup for Sunday
   {
     StopTime7 = 0;
   }
+  EEPROM.write(StartHour7Address, StartHour7);
+  EEPROM.write(StartMinute7Address, StartMinute7);
+  EEPROM.write(StopHour7Address, StopHour7);  
+  EEPROM.write(StopMinute7Address, StopMinute7);   
+  EEPROM.commit();
 }

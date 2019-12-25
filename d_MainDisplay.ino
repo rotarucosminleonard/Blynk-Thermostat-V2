@@ -240,327 +240,755 @@ void mainDisplay()
       ucg.print("Geofence: OFF");    
     }
 
+
+
     // The days Scheduling: Yesterday
     
     ucg.setFont(ucg_font_5x8_mr);
-    ucg.setPrintPos(10,100);
-    ucg.setColor(255,0,0);  
+    ucg.setPrintPos(8,100);
+    ucg.setColor(100, 100, 0);  
     ucg.print("Yesterday"); 
 
     ucg.setFont(ucg_font_5x8_mr);
     ucg.setPrintPos(16,109);
-    ucg.setColor(255,0,0);  
-    ucg.print("xx:xx");
-    ucg.setPrintPos(16,117);
-    ucg.setColor(255,0,0);       
-    ucg.print("xx:xx");
 
 
+    if (yesterday == 1){ // Sunday
+        if ((StartHour7) < 10)    {
+          ucg.print("0" + String(StartHour7));
+        }
+        else {
+          ucg.print(StartHour7);
+        }
+         ucg.print(":");
+        if ((StartMinute7) < 10)    {
+          ucg.print("0" + String(StartMinute7));
+        }
+        else {
+          ucg.print(StartMinute7);
+        }
+        
+      ucg.setPrintPos(16,117);
+        
+        if ((StopHour7) < 10)    {
+          ucg.print("0" + String(StopHour7));
+        }
+        else {
+          ucg.print(StopHour7);
+        }
+        
+        ucg.print(":");
+
+         
+        if ((StopMinute7) < 10)    {
+          ucg.print("0" + String(StopMinute7));
+        }
+        else {
+          ucg.print(String(StopMinute7));
+        }
+    }
+    else if (yesterday == 2){ //Monday
+        if ((StartHour1) < 10)    {
+          ucg.print("0" + String(StartHour1));
+        }
+        else {
+          ucg.print(StartHour1);
+        }
+         ucg.print(":");
+        if ((StartMinute1) < 10)    {
+          ucg.print("0" + String(StartMinute1));
+        }
+        else {
+          ucg.print(StartMinute1);
+        }
+
+      ucg.setPrintPos(16,117);
+        
+        if ((StopHour1) < 10)    {
+          ucg.print("0" + String(StopHour1));
+        }
+        else {
+          ucg.print(StopHour1);
+        }
+        
+        ucg.print(":");
+         
+        if ((StopMinute1) < 10)    {
+          ucg.print("0" + String(StopMinute1));
+        }
+        else {
+          ucg.print(String(StopMinute1));
+        }      
+    }
+  
+    else if (yesterday == 3){ // Tue
+        if ((StartHour2) < 10)    {
+          ucg.print("0" + String(StartHour2));
+        }
+        else {
+          ucg.print(StartHour2);
+        }
+         ucg.print(":");
+        if ((StartMinute2) < 10)    {
+          ucg.print("0" + String(StartMinute2));
+        }
+        else {
+          ucg.print(StartMinute2);
+        }
+        
+      ucg.setPrintPos(16,117);
+        
+        if ((StopHour2) < 10)    {
+          ucg.print("0" + String(StopHour2));
+        }
+        else {
+          ucg.print(StopHour2);
+        }
+        
+        ucg.print(":");
+         
+        if ((StopMinute2) < 10)    {
+          ucg.print("0" + String(StopMinute2));
+        }
+        else {
+          ucg.print(String(StopMinute2));
+        } 
+    }
+    else if (yesterday == 4){ // Wed
+        if ((StartHour3) < 10)    {
+          ucg.print("0" + String(StartHour3));
+        }
+        else {
+          ucg.print(StartHour3);
+        }
+         ucg.print(":");
+        if ((StartMinute3) < 10)    {
+          ucg.print("0" + String(StartMinute3));
+        }
+        else {
+          ucg.print(StartMinute1);
+        }
+        
+      ucg.setPrintPos(16,117);
+        
+        if ((StopHour3) < 10)    {
+          ucg.print("0" + String(StopHour3));
+        }
+        else {
+          ucg.print(StopHour3);
+        }
+        
+        ucg.print(":");
+         
+        if ((StopMinute3) < 10)    {
+          ucg.print("0" + String(StopMinute3));
+        }
+        else {
+          ucg.print(String(StopMinute3));
+        }  
+    }
+    else if (yesterday == 5){ // Thu
+        if ((StartHour4) < 10)    {
+          ucg.print("0" + String(StartHour4));
+        }
+        else {
+          ucg.print(StartHour4);
+        }
+         ucg.print(":");
+        if ((StartMinute4) < 10)    {
+          ucg.print("0" + String(StartMinute4));
+        }
+        else {
+          ucg.print(StartMinute4);
+        }
+        
+      ucg.setPrintPos(16,117);
+        
+        if ((StopHour4) < 10)    {
+          ucg.print("0" + String(StopHour4));
+        }
+        else {
+          ucg.print(StopHour4);
+        }
+        
+        ucg.print(":");
+         
+        if ((StopMinute4) < 10)    {
+          ucg.print("0" + String(StopMinute4));
+        }
+        else {
+          ucg.print(String(StopMinute4));
+        }       
+    }
+    else if (yesterday == 6){ // Fri
+        if ((StartHour5) < 10)    {
+          ucg.print("0" + String(StartHour5));
+        }
+        else {
+          ucg.print(StartHour5);
+        }
+         ucg.print(":");
+        if ((StartMinute5) < 10)    {
+          ucg.print("0" + String(StartMinute5));
+        }
+        else {
+          ucg.print(StartMinute5);
+        }
+        
+      ucg.setPrintPos(16,117);  
+        
+        if ((StopHour5) < 10)    {
+          ucg.print("0" + String(StopHour5));
+        }
+        else {
+          ucg.print(StopHour5);
+        }
+        
+        ucg.print(":");
+         
+        if ((StopMinute5) < 10)    {
+          ucg.print("0" + String(StopMinute5));
+        }
+        else {
+          ucg.print(String(StopMinute5));
+        }    
+    }
+    else if (yesterday == 7){ // Sat
+        if ((StartHour6) < 10)    {
+          ucg.print("0" + String(StartHour6));
+        }
+        else {
+          ucg.print(StartHour6);
+        }
+         ucg.print(":");
+        if ((StartMinute6) < 10)    {
+          ucg.print("0" + String(StartMinute6));
+        }
+        else {
+          ucg.print(StartMinute6);
+        }
+        
+      ucg.setPrintPos(16,117);
+        
+        if ((StopHour6) < 10)    {
+          ucg.print("0" + String(StopHour6));
+        }
+        else {
+          ucg.print(StopHour6);
+        }
+        
+        ucg.print(":");
+         
+        if ((StopMinute6) < 10)    {
+          ucg.print("0" + String(StopMinute6));
+        }
+        else {
+          ucg.print(String(StopMinute6));
+        }       
+    }
+
+
+
+    // The days Scheduling: Today
+        ucg.setFont(ucg_font_5x8_mr);
+        ucg.setPrintPos(60,100);
+        ucg.setColor(255, 200, 0); 
+        ucg.print("  Today"); 
+    
+        ucg.setFont(ucg_font_5x8_mr);
+        ucg.setPrintPos(68,109);
+
+    if ( today == 1){ // Sunday
+        if ((StartHour7) < 10)    {
+          ucg.print("0" + String(StartHour7));
+        }
+        else {
+          ucg.print(StartHour7);
+        }
+         ucg.print(":");
+        if ((StartMinute7) < 10)    {
+          ucg.print("0" + String(StartMinute7));
+        }
+        else {
+          ucg.print(StartMinute7);
+        }
+    
+        ucg.setPrintPos(68,117); 
+          
+        if ((StopHour7) < 10)    {
+          ucg.print("0" + String(StopHour7));
+        }
+        else {
+          ucg.print(StopHour7);
+        }
+        
+        ucg.print(":");
+
+         
+        if ((StopMinute7) < 10)    {
+          ucg.print("0" + String(StopMinute7));
+        }
+        else {
+          ucg.print(String(StopMinute7));
+        }
+    }
+    else if (today == 2){ //Monday
+        if ((StartHour1) < 10)    {
+          ucg.print("0" + String(StartHour1));
+        }
+        else {
+          ucg.print(StartHour1);
+        }
+         ucg.print(":");
+        if ((StartMinute1) < 10)    {
+          ucg.print("0" + String(StartMinute1));
+        }
+        else {
+          ucg.print(StartMinute1);
+        }
+    
+        ucg.setPrintPos(68,117);
+         
+        if ((StopHour1) < 10)    {
+          ucg.print("0" + String(StopHour1));
+        }
+        else {
+          ucg.print(StopHour1);
+        }
+        
+        ucg.print(":");
+         
+        if ((StopMinute1) < 10)    {
+          ucg.print("0" + String(StopMinute1));
+        }
+        else {
+          ucg.print(String(StopMinute1));
+        }      
+    }
+  
+    else if (today == 3){ // Tue
+        if ((StartHour2) < 10)    {
+          ucg.print("0" + String(StartHour2));
+        }
+        else {
+          ucg.print(StartHour2);
+        }
+         ucg.print(":");
+        if ((StartMinute2) < 10)    {
+          ucg.print("0" + String(StartMinute2));
+        }
+        else {
+          ucg.print(StartMinute2);
+        }
+    
+        ucg.setPrintPos(68,117);   
+         
+        if ((StopHour2) < 10)    {
+          ucg.print("0" + String(StopHour2));
+        }
+        else {
+          ucg.print(StopHour2);
+        }
+        
+        ucg.print(":");
+         
+        if ((StopMinute2) < 10)    {
+          ucg.print("0" + String(StopMinute2));
+        }
+        else {
+          ucg.print(String(StopMinute2));
+        } 
+    }
+    else if (today == 4){ // Wed
+        if ((StartHour3) < 10)    {
+          ucg.print("0" + String(StartHour3));
+        }
+        else {
+          ucg.print(StartHour3);
+        }
+         ucg.print(":");
+        if ((StartMinute3) < 10)    {
+          ucg.print("0" + String(StartMinute3));
+        }
+        else {
+          ucg.print(StartMinute1);
+        }
+    
+        ucg.setPrintPos(68,117);  
+         
+        if ((StopHour3) < 10)    {
+          ucg.print("0" + String(StopHour3));
+        }
+        else {
+          ucg.print(StopHour3);
+        }
+        
+        ucg.print(":");
+         
+        if ((StopMinute3) < 10)    {
+          ucg.print("0" + String(StopMinute3));
+        }
+        else {
+          ucg.print(String(StopMinute3));
+        }  
+    }
+    else if (today == 5){ // Thu
+        if ((StartHour4) < 10)    {
+          ucg.print("0" + String(StartHour4));
+        }
+        else {
+          ucg.print(StartHour4);
+        }
+         ucg.print(":");
+        if ((StartMinute4) < 10)    {
+          ucg.print("0" + String(StartMinute4));
+        }
+        else {
+          ucg.print(StartMinute4);
+        }
+    
+        ucg.setPrintPos(68,117);
+         
+        if ((StopHour4) < 10)    {
+          ucg.print("0" + String(StopHour4));
+        }
+        else {
+          ucg.print(StopHour4);
+        }
+        
+        ucg.print(":");
+         
+        if ((StopMinute4) < 10)    {
+          ucg.print("0" + String(StopMinute4));
+        }
+        else {
+          ucg.print(String(StopMinute4));
+        }       
+    }
+    else if (today == 6){ // Fri
+        if ((StartHour5) < 10)    {
+          ucg.print("0" + String(StartHour5));
+        }
+        else {
+          ucg.print(StartHour5);
+        }
+         ucg.print(":");
+        if ((StartMinute5) < 10)    {
+          ucg.print("0" + String(StartMinute5));
+        }
+        else {
+          ucg.print(StartMinute5);
+        }
+    
+        ucg.setPrintPos(68,117);
+         
+        if ((StopHour5) < 10)    {
+          ucg.print("0" + String(StopHour5));
+        }
+        else {
+          ucg.print(StopHour5);
+        }
+        
+        ucg.print(":");
+         
+        if ((StopMinute5) < 10)    {
+          ucg.print("0" + String(StopMinute5));
+        }
+        else {
+          ucg.print(String(StopMinute5));
+        }    
+    }
+    else if (today == 7){ // Sat
+        if ((StartHour6) < 10)    {
+          ucg.print("0" + String(StartHour6));
+        }
+        else {
+          ucg.print(StartHour6);
+        }
+         ucg.print(":");
+        if ((StartMinute6) < 10)    {
+          ucg.print("0" + String(StartMinute6));
+        }
+        else {
+          ucg.print(StartMinute6);
+        }
+    
+        ucg.setPrintPos(68,117);  
+         
+        if ((StopHour6) < 10)    {
+          ucg.print("0" + String(StopHour6));
+        }
+        else {
+          ucg.print(StopHour6);
+        }
+        
+        ucg.print(":");
+         
+        if ((StopMinute6) < 10)    {
+          ucg.print("0" + String(StopMinute6));
+        }
+        else {
+          ucg.print(String(StopMinute6));
+        }       
+    }
+  
+
+ 
 
     // The days Scheduling: Tomorrow
+    
     ucg.setFont(ucg_font_5x8_mr);
     ucg.setPrintPos(111,100);
-    ucg.setColor(255,0,0);  
+    ucg.setColor(100, 100, 0); 
     ucg.print("Tomorrow"); 
     
     ucg.setFont(ucg_font_5x8_mr);
     ucg.setPrintPos(121,109);
-    ucg.setColor(255,0,0);  
-    ucg.print("xx:xx");
-    ucg.setPrintPos(121,117);
-    ucg.setColor(255,0,0);       
-    ucg.print("xx:xx");
+    if (tomorrow == 1){ // Sunday
+        if ((StartHour7) < 10)    {
+          ucg.print("0" + String(StartHour7));
+        }
+        else {
+          ucg.print(StartHour7);
+        }
+         ucg.print(":");
+        if ((StartMinute7) < 10)    {
+          ucg.print("0" + String(StartMinute7));
+        }
+        else {
+          ucg.print(StartMinute7);
+        }
+        
+        ucg.setPrintPos(121,117);
+        
+        if ((StopHour7) < 10)    {
+          ucg.print("0" + String(StopHour7));
+        }
+        else {
+          ucg.print(StopHour7);
+        }
+        
+        ucg.print(":");
 
-
-// Today's interval printed on the screen
-    switch (OfflineRTC.dayOfWeek)// Friendly printout the weekday
-    {
-      case MON:
-        ucg.setFont(ucg_font_5x8_mr);
-        ucg.setPrintPos(60,100);
-        ucg.setColor(255,0,0);  
-        ucg.print("Monday"); 
-    
-        ucg.setFont(ucg_font_5x8_mr);
-        ucg.setPrintPos(68,109);
-        ucg.setColor(255,0,0); 
-        if ((StartHour) < 10)    {
-          ucg.print("0" + String(StartHour));
+         
+        if ((StopMinute7) < 10)    {
+          ucg.print("0" + String(StopMinute7));
         }
         else {
-          ucg.print(StartHour);
+          ucg.print(String(StopMinute7));
         }
-         ucg.print(":");
-        if ((StartMinute) < 10)    {
-          ucg.print("0" + String(StartMinute));
-        }
-        else {
-          ucg.print(StartMinute);
-        }
-        ucg.setPrintPos(68,117);
-        ucg.setColor(255,0,0);       
-          
-        if ((StopHour) < 10)    {
-          ucg.print("0" + String(StopHour));
-        }
-        else {
-          ucg.print(StopHour);
-        }
-        ucg.print(":");
-        if ((StopMinute) < 10)    {
-          ucg.print("0" + String(StopMinute));
-        }
-        else {
-          ucg.print(String(StopMinute));
-        }
-        break;
-      case TUE:
-        ucg.setFont(ucg_font_5x8_mr);
-        ucg.setPrintPos(60,100);
-        ucg.setColor(255,0,0);  
-        ucg.print("Tuesday"); 
-    
-        ucg.setFont(ucg_font_5x8_mr);
-        ucg.setPrintPos(68,109);
-        ucg.setColor(255,0,0); 
-        if ((StartHour) < 10)    {
-          ucg.print("0" + String(StartHour));
-        }
-        else {
-          ucg.print(StartHour);
-        }
-         ucg.print(":");
-        if ((StartMinute) < 10)    {
-          ucg.print("0" + String(StartMinute));
-        }
-        else {
-          ucg.print(StartMinute);
-        }
-        ucg.setPrintPos(68,117);
-        ucg.setColor(255,0,0);       
-          
-        if ((StopHour) < 10)    {
-          ucg.print("0" + String(StopHour));
-        }
-        else {
-          ucg.print(StopHour);
-        }
-        ucg.print(":");
-        if ((StopMinute) < 10)    {
-          ucg.print("0" + String(StopMinute));
-        }
-        else {
-          ucg.print(String(StopMinute));
-        }
-        break;
-      case WED:
-        ucg.setFont(ucg_font_5x8_mr);
-        ucg.setPrintPos(60,100);
-        ucg.setColor(255,0,0);  
-        ucg.print("Wednesday"); 
-    
-        ucg.setFont(ucg_font_5x8_mr);
-        ucg.setPrintPos(68,109);
-        ucg.setColor(255,0,0); 
-        if ((StartHour) < 10)    {
-          ucg.print("0" + String(StartHour));
-        }
-        else {
-          ucg.print(StartHour);
-        }
-         ucg.print(":");
-        if ((StartMinute) < 10)    {
-          ucg.print("0" + String(StartMinute));
-        }
-        else {
-          ucg.print(StartMinute);
-        }
-        ucg.setPrintPos(68,117);
-        ucg.setColor(255,0,0);       
-          
-        if ((StopHour) < 10)    {
-          ucg.print("0" + String(StopHour));
-        }
-        else {
-          ucg.print(StopHour);
-        }
-        ucg.print(":");
-        if ((StopMinute) < 10)    {
-          ucg.print("0" + String(StopMinute));
-        }
-        else {
-          ucg.print(String(StopMinute));
-        }
-        break;
-      case THU:
-        ucg.setFont(ucg_font_5x8_mr);
-        ucg.setPrintPos(60,100);
-        ucg.setColor(255,0,0);  
-        ucg.print("Thursday"); 
-    
-        ucg.setFont(ucg_font_5x8_mr);
-        ucg.setPrintPos(68,109);
-        ucg.setColor(255,0,0); 
-        if ((StartHour) < 10)    {
-          ucg.print("0" + String(StartHour));
-        }
-        else {
-          ucg.print(StartHour);
-        }
-         ucg.print(":");
-        if ((StartMinute) < 10)    {
-          ucg.print("0" + String(StartMinute));
-        }
-        else {
-          ucg.print(StartMinute);
-        }
-        ucg.setPrintPos(68,117);
-        ucg.setColor(255,0,0);       
-          
-        if ((StopHour) < 10)    {
-          ucg.print("0" + String(StopHour));
-        }
-        else {
-          ucg.print(StopHour);
-        }
-        ucg.print(":");
-        if ((StopMinute) < 10)    {
-          ucg.print("0" + String(StopMinute));
-        }
-        else {
-          ucg.print(String(StopMinute));
-        }
-        break;
-      case FRI:
-        ucg.setFont(ucg_font_5x8_mr);
-        ucg.setPrintPos(60,100);
-        ucg.setColor(255,0,0);  
-        ucg.print("Friday"); 
-    
-        ucg.setFont(ucg_font_5x8_mr);
-        ucg.setPrintPos(68,109);
-        ucg.setColor(255,0,0); 
-        if ((StartHour) < 10)    {
-          ucg.print("0" + String(StartHour));
-        }
-        else {
-          ucg.print(StartHour);
-        }
-         ucg.print(":");
-        if ((StartMinute) < 10)    {
-          ucg.print("0" + String(StartMinute));
-        }
-        else {
-          ucg.print(StartMinute);
-        }
-        ucg.setPrintPos(68,117);
-        ucg.setColor(255,0,0);       
-          
-        if ((StopHour) < 10)    {
-          ucg.print("0" + String(StopHour));
-        }
-        else {
-          ucg.print(StopHour);
-        }
-        ucg.print(":");
-        if ((StopMinute) < 10)    {
-          ucg.print("0" + String(StopMinute));
-        }
-        else {
-          ucg.print(String(StopMinute));
-        }
-        break;
-      case SAT:
-        ucg.setFont(ucg_font_5x8_mr);
-        ucg.setPrintPos(60,100);
-        ucg.setColor(255,0,0);  
-        ucg.print("Saturday"); 
-    
-        ucg.setFont(ucg_font_5x8_mr);
-        ucg.setPrintPos(68,109);
-        ucg.setColor(255,0,0); 
-        if ((StartHour) < 10)    {
-          ucg.print("0" + String(StartHour));
-        }
-        else {
-          ucg.print(StartHour);
-        }
-         ucg.print(":");
-        if ((StartMinute) < 10)    {
-          ucg.print("0" + String(StartMinute));
-        }
-        else {
-          ucg.print(StartMinute);
-        }
-        ucg.setPrintPos(68,117);
-        ucg.setColor(255,0,0);       
-          
-        if ((StopHour) < 10)    {
-          ucg.print("0" + String(StopHour));
-        }
-        else {
-          ucg.print(StopHour);
-        }
-        ucg.print(":");
-        if ((StopMinute) < 10)    {
-          ucg.print("0" + String(StopMinute));
-        }
-        else {
-          ucg.print(String(StopMinute));
-        }
-        break;
-      case SUN:
-        ucg.setFont(ucg_font_5x8_mr);
-        ucg.setPrintPos(60,100);
-        ucg.setColor(255,0,0);  
-        ucg.print("Sunday"); 
-    
-        ucg.setFont(ucg_font_5x8_mr);
-        ucg.setPrintPos(68,109);
-        ucg.setColor(255,0,0); 
-        if ((StartHour) < 10)    {
-          ucg.print("0" + String(StartHour));
-        }
-        else {
-          ucg.print(StartHour);
-        }
-         ucg.print(":");
-        if ((StartMinute) < 10)    {
-          ucg.print("0" + String(StartMinute));
-        }
-        else {
-          ucg.print(StartMinute);
-        }
-        ucg.setPrintPos(68,117);
-        ucg.setColor(255,0,0);       
-          
-        if ((StopHour) < 10)    {
-          ucg.print("0" + String(StopHour));
-        }
-        else {
-          ucg.print(StopHour);
-        }
-        ucg.print(":");
-        if ((StopMinute) < 10)    {
-          ucg.print("0" + String(StopMinute));
-        }
-        else {
-          ucg.print(String(StopMinute));
-        }
-        break;
     }
+    else if (tomorrow == 2){ //Monday
+        if ((StartHour1) < 10)    {
+          ucg.print("0" + String(StartHour1));
+        }
+        else {
+          ucg.print(StartHour1);
+        }
+         ucg.print(":");
+        if ((StartMinute1) < 10)    {
+          ucg.print("0" + String(StartMinute1));
+        }
+        else {
+          ucg.print(StartMinute1);
+        }
+
+        ucg.setPrintPos(121,117);
+        
+        if ((StopHour1) < 10)    {
+          ucg.print("0" + String(StopHour1));
+        }
+        else {
+          ucg.print(StopHour1);
+        }
+        
+        ucg.print(":");
+         
+        if ((StopMinute1) < 10)    {
+          ucg.print("0" + String(StopMinute1));
+        }
+        else {
+          ucg.print(String(StopMinute1));
+        }      
+    }
+    else if (tomorrow == 3){ // Tue
+        if ((StartHour2) < 10)    {
+          ucg.print("0" + String(StartHour2));
+        }
+        else {
+          ucg.print(StartHour2);
+        }
+         ucg.print(":");
+        if ((StartMinute2) < 10)    {
+          ucg.print("0" + String(StartMinute2));
+        }
+        else {
+          ucg.print(StartMinute2);
+        }
+
+        ucg.setPrintPos(121,117);
+        
+        if ((StopHour2) < 10)    {
+          ucg.print("0" + String(StopHour2));
+        }
+        else {
+          ucg.print(StopHour2);
+        }
+        
+        ucg.print(":");
+         
+        if ((StopMinute2) < 10)    {
+          ucg.print("0" + String(StopMinute2));
+        }
+        else {
+          ucg.print(String(StopMinute2));
+        } 
+    }
+    else if (tomorrow == 4){ // Wed
+        if ((StartHour3) < 10)    {
+          ucg.print("0" + String(StartHour3));
+        }
+        else {
+          ucg.print(StartHour3);
+        }
+         ucg.print(":");
+        if ((StartMinute3) < 10)    {
+          ucg.print("0" + String(StartMinute3));
+        }
+        else {
+          ucg.print(StartMinute1);
+        }
+
+        ucg.setPrintPos(121,117);
+        
+        if ((StopHour3) < 10)    {
+          ucg.print("0" + String(StopHour3));
+        }
+        else {
+          ucg.print(StopHour3);
+        }
+        
+        ucg.print(":");
+         
+        if ((StopMinute3) < 10)    {
+          ucg.print("0" + String(StopMinute3));
+        }
+        else {
+          ucg.print(String(StopMinute3));
+        }  
+    }
+    else if (tomorrow == 5){ // Thu
+        if ((StartHour4) < 10)    {
+          ucg.print("0" + String(StartHour4));
+        }
+        else {
+          ucg.print(StartHour4);
+        }
+         ucg.print(":");
+        if ((StartMinute4) < 10)    {
+          ucg.print("0" + String(StartMinute4));
+        }
+        else {
+          ucg.print(StartMinute4);
+        }
+
+        ucg.setPrintPos(121,117);
+        
+        if ((StopHour4) < 10)    {
+          ucg.print("0" + String(StopHour4));
+        }
+        else {
+          ucg.print(StopHour4);
+        }
+        
+        ucg.print(":");
+         
+        if ((StopMinute4) < 10)    {
+          ucg.print("0" + String(StopMinute4));
+        }
+        else {
+          ucg.print(String(StopMinute4));
+        }       
+    }
+    else if (tomorrow == 6){ // Fri
+        if ((StartHour5) < 10)    {
+          ucg.print("0" + String(StartHour5));
+        }
+        else {
+          ucg.print(StartHour5);
+        }
+         ucg.print(":");
+        if ((StartMinute5) < 10)    {
+          ucg.print("0" + String(StartMinute5));
+        }
+        else {
+          ucg.print(StartMinute5);
+        }
+
+        ucg.setPrintPos(121,117);
+        
+        if ((StopHour5) < 10)    {
+          ucg.print("0" + String(StopHour5));
+        }
+        else {
+          ucg.print(StopHour5);
+        }
+        
+        ucg.print(":");
+         
+        if ((StopMinute5) < 10)    {
+          ucg.print("0" + String(StopMinute5));
+        }
+        else {
+          ucg.print(String(StopMinute5));
+        }    
+    }
+    else if (tomorrow == 7){ // Sat
+        if ((StartHour6) < 10)    {
+          ucg.print("0" + String(StartHour6));
+        }
+        else {
+          ucg.print(StartHour6);
+        }
+         ucg.print(":");
+        if ((StartMinute6) < 10)    {
+          ucg.print("0" + String(StartMinute6));
+        }
+        else {
+          ucg.print(StartMinute6);
+        }
+
+        ucg.setPrintPos(121,117);
+        
+        if ((StopHour6) < 10)    {
+          ucg.print("0" + String(StopHour6));
+        }
+        else {
+          ucg.print(StopHour6);
+        }
+        
+        ucg.print(":");
+         
+        if ((StopMinute6) < 10)    {
+          ucg.print("0" + String(StopMinute6));
+        }
+        else {
+          ucg.print(String(StopMinute6));
+        }       
+    }
+
+
   
     ucg.setFont(ucg_font_5x8_mr);
     ucg.setPrintPos(1,126);  
-    ucg.print("Bottom Placeholder"); 
-    ucg.setPrintPos(54,126);
-
+    ucg.setColor(255, 255, 255); 
+    ucg.print(NAMEandVERSION); 
 
   }
   // menu == 1
   else {
     ucg.clearScreen();
-    ucg.setColor(255, 0, 0);
+    ucg.setColor(255, 255, 255); 
     ucg.setPrintPos(10, 10);
     ucg.print("The Menu:");
     ucg.setPrintPos(15, 24); //160/128
