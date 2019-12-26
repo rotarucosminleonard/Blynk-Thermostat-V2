@@ -8,7 +8,11 @@ automatically and kept by the rtc module.
  */
 
 
-#define NAMEandVERSION "ESP32_Thermostat V2.80"
+#define NAMEandVERSION "ESP32_Thermostat V2.82"
+
+float tempDrop = 0.4;    // temperature difference required to start the heating again
+float tempOvershoot = 0.2; // temperature difference to stop the heating before reaching the temperature set
+
 #include "config.h" // SSID,PASS, AUTH,serveraddr
 
 //#define BLYNK_DEBUG
@@ -277,9 +281,9 @@ bool GPSTrigger;
 bool GPSAutoOff;
 
 float tempset = 0.0; // realtime temperature
-float tempdrop = 0.6;    // temperature difference required to start the heating again
-float tempset2; // temperature at the moment of starging the heating
 float referenceTemp = 0;
+float bottomTreshold;
+float topThreshold;
 
 // EEPROM adreses
 int tempsetaddress = 0;

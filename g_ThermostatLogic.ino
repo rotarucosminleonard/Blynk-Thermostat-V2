@@ -90,55 +90,22 @@ void HeatingLogic()
 
 void TempCompare()
 {
-  //tempToUse();
   referenceTemp = temp;
-  tempset2 = tempset-tempdrop;
-  Serial.println("tempset2= "+ String(tempset2));
-  Serial.println("referenceTemp= "+ String(referenceTemp));    
-  // starding from
-  // HEATING = 0
-  // STOPPED = 0
-            
-  if (HEATING == 0 && STOPPED == 0){
-    if (tempset2 > referenceTemp){
-      HeatOn();
-      //Blynk.setProperty(V5, "color", "purple");    
-      Serial.println("Heating Just Started!");        
-    }
-    else {
-      HeatOff();
-      STOPPED = 1;
-      Serial.println("Keep it OFF!");
-    }
+  bottomTreshold = tempset-tempDrop;
+  topThreshold = tempset-tempOvershoot;
+  Serial.println("referenceTemp= "+ String(referenceTemp));  
+  Serial.println("bottomTreshold= "+ String(bottomTreshold));
+  Serial.println("topTreshold= "+ String(bottomTreshold));
+
+  if (referenceTemp <= bottomTreshold){
+    HeatOn(); 
+    Serial.println("Heating is running!");
   }
-          
-  else if (HEATING == 1){
-    if (referenceTemp > tempset){ // 
-      HeatOff();
-      STOPPED = 1;
-      //Blynk.setProperty(V5, "color", "green");
-      Serial.println("Temp was reached.Wait till it drops by 1C");
-    }
-    else {
-      HeatOn();
-      //STOPPED = 0; 
-      Blynk.setProperty(V5, "color", "red");  
-      Serial.println("Heating...");         
-    }
-  }    
-  else if (STOPPED == 1){         
-    if (referenceTemp < tempset2){ // start heating again only if the temp dropped by one deg
-      HeatOn();
-      //Blynk.setProperty(V5, "color", "red");                             
-      Serial.println("Temp dropped by one deg.Start heating again");
-    }
-    else {
-      HeatOff();
-      Serial.println("Keep it off till it drops by one deg");              
-    }
+  else if (referenceTemp >= topThreshold){
+    HeatOff();
+    Serial.println("Heating is Stopped!");
   }
 }
-
 
 
 void HeatOn() 

@@ -493,7 +493,7 @@ void mainDisplay()
         ucg.setFont(ucg_font_5x8_mr);
         ucg.setPrintPos(60,100);
         ucg.setColor(255, 200, 0); 
-        ucg.print("  Today"); 
+        ucg.print(" Today"); 
     
         ucg.setFont(ucg_font_5x8_mr);
         ucg.setPrintPos(68,109);
@@ -985,20 +985,21 @@ void mainDisplay()
     ucg.print(NAMEandVERSION); 
 
   }
+  
   // menu == 1
   else {
     ucg.clearScreen();
     ucg.setColor(255, 255, 255); 
     ucg.setPrintPos(10, 10);
-    ucg.print("The Menu:");
+    ucg.print("Settings :");
     ucg.setPrintPos(15, 24); //160/128
-    ucg.print(" Option 1");
+    ucg.print(" Set Time and Date");
     ucg.setPrintPos(15, 38); //160/128
-    ucg.print(" Option 2");
+    ucg.print(" Scheduling:"); if (scheduled == 1 ){ ucg.print("    Enabled");} else { ucg.print("   Disabled");};
     ucg.setPrintPos(15, 52); //160/128
-    ucg.print(" Option 3");
+    ucg.print(" Set the time intervals");
     ucg.setPrintPos(15, 66); //160/128
-    ucg.print(" Option 4");
+    ucg.print(" Geofence:"); if (GPSAutoOff == 1 ){ ucg.print("    Enabled");} else { ucg.print("   Disabled");}
     ucg.setPrintPos(10, 80); //160/128
     ucg.print(" Save & Exit!");
   }
