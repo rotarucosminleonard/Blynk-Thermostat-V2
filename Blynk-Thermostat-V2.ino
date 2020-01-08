@@ -8,7 +8,7 @@ automatically and kept by the rtc module.
  */
 
 
-#define NAMEandVERSION "ESP32_Thermostat V2.82"
+#define NAMEandVERSION "ESP32_Thermostat V2.83"
 
 float tempDrop = 0.4;    // temperature difference required to start the heating again
 float tempOvershoot = 0.2; // temperature difference to stop the heating before reaching the temperature set
@@ -125,13 +125,48 @@ WidgetLED     ledGPSTrigger(V33);
 #define timeInterval7VPin   V27 // Sunday
 
 
-#define tempSetControlVPin  V14
+//#define tempSetControlVPin  V14
 #define setModeVPin         V15 // manual vs scheduled interval
-#define referenceTempVPin   V16
-#define referenceZoneVPin   V17 // temperature from which room
+#define referenceTempVPin   V16 // the reference remote temperature used by the thermostat
 #define geofenceSwitchVPin  V18 // geofence should work on manual or int
 #define locationVPin        V20 // Use the mirror instead. It gets received any time it is requested.
 
+
+//Running on Multiple rooms MODE requires radiator valves
+//remote temperature
+
+#define referenceZoneVPin   V17 // temperature from which room
+int referenceZone = 1;
+
+#define room1Vpin V51
+#define room2Vpin V52
+#define room3Vpin V53
+
+#define EnableRoom1Vpin V54
+#define EnableRoom2Vpin V55
+#define EnableRoom3Vpin V56
+#define EnableLocalVpin V50
+
+bool EnableRoom1;
+bool EnableRoom2;
+bool EnableRoom3;
+bool EnableLocal;
+
+#define HBroom1Vpin V61
+#define HBroom2Vpin V62
+#define HBroom3Vpin V63
+
+float room1Temp;
+float room2Temp;
+float room3Temp;
+
+bool HBroom1 = 1;
+bool HBroom2 = 1;
+bool HBroom3 = 1;
+
+bool room1Status = 1;
+bool room2Status = 1;
+bool room3Status = 1;
 
 // BME reading variables
 short int delayaftergas = 0;
@@ -419,6 +454,7 @@ void setup() {
   timer.setInterval(100000L,  OnlineTime);
   timer.setInterval(8000L, PeriodicSync);
   timer.setInterval(20000L, HeatingLogic);
+  timer.setInterval(120000L, RemoteSensorsCheck);
 }
 
 void loop() {
@@ -438,6 +474,7 @@ BLYNK_CONNECTED() {
   Blynk.syncVirtual(geofenceSwitchVPin);
   Blynk.syncVirtual(locationVPin);
   Blynk.syncVirtual(setModeVPin);
+  Blynk.syncVirtual(referenceZoneVPin); // Check the refference temperature settings
     // Synchronize time on connection
 //  OfflineTime();
 //  delay(100);
@@ -524,4 +561,56 @@ void ReadBME680()
   h = (bme.humidity);
   g = (bme.gas_resistance / 1000.0);
   a = (bme.readAltitude(SEALEVELPRESSURE_HPA));
+}
+
+void RemoteSensorsCheck() 
+{
+  if (HBroom1 == 1)
+  {
+    HBroom1 = 0;
+    Blynk.setProperty(EnableRoom1Vpin, "onBackColor", "#23C48E"); //Green Background color
+    Blynk.setProperty(EnableRoom1Vpin, "onLabel", room1Temp); // Post temperature as label
+    // Good To USE
+    room1Status = 1;
+  }
+  else 
+  {
+    Serial.println("The device from room 1 is OFFLINE");
+    Blynk.setProperty(EnableRoom1Vpin, "onBackColor", "#D3435C"); // Red Background color
+    // NOT Good To USE
+    room1Status = 0;
+  }
+
+  if (HBroom2 == 1)
+  {
+    HBroom2 = 0;
+    Blynk.setProperty(EnableRoom2Vpin, "onBackColor", "#23C48E"); //Green Background color
+    Blynk.setProperty(EnableRoom2Vpin, "onLabel", room2Temp); // Post temperature as label
+    // Good To USE
+    room2Status = 1;
+  }
+  else 
+  {
+    Serial.println("The device from room 2 is OFFLINE");
+    Blynk.setProperty(EnableRoom2Vpin, "onBackColor", "#D3435C"); // Red Background color
+    // NOT Good To USE
+    room2Status = 0;
+  }
+
+  if (HBroom3 == 1)
+  {
+    HBroom3 = 0;
+    Blynk.setProperty(EnableRoom3Vpin, "onBackColor", "#23C48E"); //Green Background color
+    Blynk.setProperty(EnableRoom3Vpin, "onLabel", room3Temp); // Post temperature as label
+    // Good To USE
+    room3Status = 1;
+  }
+  else 
+  {
+    Serial.println("The device from room 3 is OFFLINE");
+    Blynk.setProperty(EnableRoom3Vpin, "onBackColor", "#D3435C"); // Red Background color
+    // NOT Good To USE
+    room3Status = 0;
+  }
+  
 }

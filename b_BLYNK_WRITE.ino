@@ -8,6 +8,8 @@ BLYNK_WRITE(setModeVPin)   // ON 1 = scheduled   - OFF 0 = manual(check temperat
   Serial.print("scheduled=");
   Serial.println(scheduled);
   Serial.println();
+  EEPROM.write(scheduledaddress, scheduled);
+  EEPROM.commit();
   yield();
 }
 
@@ -343,4 +345,122 @@ BLYNK_WRITE(timeInterval7VPin) {    // time interval setup for Sunday
   EEPROM.write(StopHour7Address, StopHour7);  
   EEPROM.write(StopMinute7Address, StopMinute7);   
   EEPROM.commit();
+}
+
+BLYNK_WRITE(referenceZoneVPin) 
+{
+  referenceZone = param.asInt();
+  switch (referenceZone)
+  {
+  
+      case 1: { // Item 1
+        Serial.println("Local Temperature selected");
+        break;
+      }
+      case 2: { // Item 2
+        Serial.println("Multiple Rooms Mode is selected");
+        break;
+      }
+      case 3: { // Item 3
+        Serial.println("Room1 is selected");
+        break;
+      }
+      case 4: { // Item 4
+        Serial.println("Room2 is selected");
+        break;
+      } 
+      case 5: { // Item 5
+        Serial.println("Room3 is selected");
+        break;
+      } 
+  } 
+}
+
+
+
+
+BLYNK_WRITE(room1Vpin)   // 
+{ 
+  //restoring int value
+  room1Temp = param.asFloat();
+  Serial.println();
+  Serial.print("room1Temp= ");
+  Serial.println(room1Temp);
+  Serial.println();
+  yield();
+}
+
+BLYNK_WRITE(room2Vpin)   // 
+{ 
+  //restoring int value
+  room2Temp = param.asInt();
+  Serial.println();
+  Serial.print("room2Temp= ");
+  Serial.println(room2Temp);
+  Serial.println();
+  yield();
+}
+
+BLYNK_WRITE(room3Vpin)   // 
+{ 
+  //restoring int value
+  room3Temp = param.asInt();
+  Serial.println();
+  Serial.print("room3Temp= ");
+  Serial.println(room3Temp);
+  Serial.println();
+  yield();
+}
+
+BLYNK_WRITE(HBroom1Vpin)   // 
+{ 
+  //restoring int value
+  HBroom1 = param.asInt();
+  Serial.println();
+  Serial.print("HBroom1= ");
+  Serial.println(HBroom1);
+  Serial.println();
+  yield();
+}
+
+BLYNK_WRITE(HBroom2Vpin)   // 
+{ 
+  //restoring int value
+  HBroom2 = param.asInt();
+  Serial.println();
+  Serial.print("HBroom2= ");
+  Serial.println(HBroom2);
+  Serial.println();
+  yield();
+}
+
+BLYNK_WRITE(HBroom3Vpin)   // 
+{ 
+  //restoring int value
+  HBroom3 = param.asInt();
+  Serial.println();
+  Serial.print("HBroom2= ");
+  Serial.println(HBroom3);
+  Serial.println();
+  yield();
+}
+
+BLYNK_WRITE(EnableLocalVpin)
+{
+  EnableLocal = param.asInt();
+}
+
+BLYNK_WRITE(EnableRoom1Vpin)
+{
+  EnableRoom1 = param.asInt();
+}
+
+BLYNK_WRITE(EnableRoom2Vpin)
+{
+  EnableRoom2 = param.asInt();
+}
+
+BLYNK_WRITE(EnableRoom3Vpin)
+{
+  EnableRoom3 = param.asInt();
 }

@@ -1000,7 +1000,9 @@ void mainDisplay()
     ucg.print(" Set the time intervals");
     ucg.setPrintPos(15, 66); //160/128
     ucg.print(" Geofence:"); if (GPSAutoOff == 1 ){ ucg.print("    Enabled");} else { ucg.print("   Disabled");}
-    ucg.setPrintPos(10, 80); //160/128
+    ucg.setPrintPos(15, 80); //160/128
+    ucg.print(" Reference Temperature");    
+    ucg.setPrintPos(10, 94); //160/128
     ucg.print(" Save & Exit!");
   }
 }

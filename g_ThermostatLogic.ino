@@ -1,6 +1,5 @@
 void HeatingLogic()
 {
-  if (Blynk.connected()) {
     if (scheduled == 1 ){
       Serial.println("By Time");
       Serial.println();
@@ -74,23 +73,77 @@ void HeatingLogic()
         }
       }  
     }    
-  }
-  else {     //not connected
-    Serial.println("Not Connected. Scheduling wont work for now.");
-    if (scheduled == 1){
-      HeatOff();
-    }
-    else {
-      Serial.println("It's offline, but it works on manual.");
-      TempCompare();  
-    }
-  }
 }
 
 
+void ReferenceHeatingZone()
+{
+  switch (referenceZone)
+  {
+  
+      case 1: { // Item 1
+        Serial.println("Local Temperature selected");
+        referenceTemp = temp;
+        break;
+      }
+      case 2: { // Item 2
+        Serial.println("Multiple Rooms Mode is selected");
+        referenceTemp = temp; // temporary unavailable
+        // check if any of the selected temperatures is bellow the tempset
+        
+        if (EnableLocal == 1){    
+        }
+        if (EnableRoom1){     
+        }
+        if (EnableRoom2){
+        }
+        if (EnableRoom3){
+        }
+
+
+        
+        break;
+      }
+      case 3: { // Item 3
+        Serial.println("Room1 is selected");
+        if (room1Status == 1)
+        {
+          referenceTemp = room1Temp;          
+        }
+        else {
+          referenceTemp = temp;
+        }
+        break;
+      }
+      case 4: { // Item 4
+        Serial.println("Room2 is selected");
+        if (room2Status == 1)
+        {
+          referenceTemp = room2Temp;          
+        }
+        else {
+          referenceTemp = temp;
+        }
+        break;
+      } 
+      case 5: { // Item 5
+        Serial.println("Room3 is selected");
+        if (room3Status == 1)
+        {
+          referenceTemp = room3Temp;          
+        }
+        else {
+          referenceTemp = temp;
+        }
+        break;
+      } 
+  } 
+}
+
 void TempCompare()
 {
-  referenceTemp = temp;
+  ReferenceHeatingZone();
+  //referenceTemp = temp;
   bottomTreshold = tempset-tempDrop;
   topThreshold = tempset-tempOvershoot;
   Serial.println("referenceTemp= "+ String(referenceTemp));  
