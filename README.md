@@ -10,7 +10,8 @@ The hardware used:
 - <a href= "https://www.ebay.co.uk/itm/DC-12V-1-Ch-433MHz-Wireless-Relay-RF-Remote-Control-Switch-Heterodyne-Receiver/292158576954?ssPageName=STRK%3AMEBIDX%3AIT&_trksid=p2057872.m2749.l2649"> 433 Mhz Relay Module</a> + <a href = "https://www.ebay.co.uk/itm/1-2-5PCS-AC110-220V-to-DC12V-Voltage-Power-Supply-Step-Down-Converter-Module/283386093098?ssPageName=STRK%3AMEBIDX%3AIT&_trksid=p2057872.m2749.l2649"> Power Module </a>
 
 # Blynk-Thermostat-V2
-A smarter version of a thermostat that can work and be fully programmed online or offline. It will store the required settings and inputs like temperature set, operating mode, the time and the time intervals required for scheduling in order to work offline when the connection to the server drops. It will be able to recover it when its available again. The output command for the heating device can be adjusted for the needs. I am currently using 433mhz modules from ebay for wireless transmission to the heating system and the relay for trggering it. The local time is updated from the server automatically and kept by the rtc module.
+A smarter version of a thermostat that can work and be fully programmed online or offline. It will store the required settings and inputs like temperature set, operating mode, the time and the time intervals required for scheduling in order to work offline when the connection to the server drops. It will be able to recover it when its available again. The output command for the heating device can be adjusted for the needs. I am currently using 433mhz modules from ebay for wireless transmission to the heating system and the relay for trggering it. The local time is updated from the server automatically and kept by the rtc module. It can use data from up to remote 3 sensors as temperature refference for heating logic (radiator valves required for this to prevent overheating in some other rooms).
+
 
 About the project:
 + The ESP32 works using the Blynk Platform and it displays the data on a LCD colour display (ST7735)  using the UCGLIB library. 
@@ -18,18 +19,17 @@ About the project:
 + The offline time kept by an external I2C RTC DS13017z using a library that does not conflict with the Online RTC used by Blynk
 
 Working:
-- Scheduling - Geofence on Scheduling to be implemented soon
-- Heating logic (needs some improvements)
-- Storing some settings
-- Timekeeping
-- Connection management
-- Geofence
+- Scheduling with Geofence Feature
+- Heating logic
+- Storing the required settings - More tests required
+- Timekeeping  - More tests required
+- Connection management  - More tests required
+- Geofence 
 - Wifi Signal
 - Local temperature as a refference
-
-Not working yet:
-- No hardware menu implemented at all
-- Multiple temperature inputs from different sensors
+- Up to 3 Remote sensors can be used for temperature refference  - More tests required
+- Heartbeat for all 3 sensors  - More tests required
+- Menu - In progress...
 
 
 ESP32 (install board)- https://github.com/espressif/arduino-esp32/blob/master/docs/arduino-ide/boards_manager.md
