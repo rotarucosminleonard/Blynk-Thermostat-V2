@@ -193,10 +193,28 @@ void mainDisplay()
     ucg.print(p + String(" hPa"));
       
     ucg.setPrintPos(100,66);
+    if (dewPoint>26 || dewPoint < 10){
+      ucg.setColor(255, 0, 0);
+    }
+    else if (dewPoint >= 21 && dewPoint < 26){
+      ucg.setColor(153, 76, 0); 
+    }
+    else if (dewPoint >= 18 && dewPoint < 21){
+      ucg.setColor(255, 153, 51);
+    }
+    else if (dewPoint >= 16 && dewPoint < 18){
+      ucg.setColor(255, 255, 60);
+    }
+    else if (dewPoint >= 13 && dewPoint < 16){
+      ucg.setColor(0, 255, 0);
+    }
+    else if (dewPoint >= 10 && dewPoint < 13){
+      ucg.setColor(255, 255, 20);
+    }
     ucg.setFont(ucg_font_5x8_mr);
-    ucg.print("Gases");
+    ucg.print("DewPoint");
     ucg.setPrintPos(100,78);
-    ucg.print(g + String(" KOhms") );
+    ucg.print(dewPoint + String(" C   ") );
 
     if (scheduled == 1)
     {

@@ -88,20 +88,39 @@ void ReferenceHeatingZone()
       }
       case 2: { // Item 2
         Serial.println("Multiple Rooms Mode is selected");
-        referenceTemp = temp; // temporary unavailable
+        //referenceTemp = temp; // temporary unavailable
         // check if any of the selected temperatures is bellow the tempset
         
-        if (EnableLocal == 1){    
+        if (EnableLocal == 1){
+              if (temp <= bottomTreshold){
+                referenceTemp = temp; 
+              }          
         }
-        if (EnableRoom1){     
+        if (EnableRoom1){
+          if (room1Status == 1)
+            {
+              if (room1Temp <= bottomTreshold){
+                referenceTemp = room1Temp; 
+              }        
+            }     
         }
         if (EnableRoom2){
+          if (room2Status == 1)
+            {
+              if (room2Temp <= bottomTreshold){
+                referenceTemp = room2Temp; 
+              }        
+            } 
         }
-        if (EnableRoom3){
+        if (EnableRoom3 == 1){
+          if (room3Status == 1)
+            {
+              if (room3Temp <= bottomTreshold){
+                referenceTemp = room3Temp; 
+              }        
+            } 
         }
 
-
-        
         break;
       }
       case 3: { // Item 3
@@ -138,6 +157,7 @@ void ReferenceHeatingZone()
         break;
       } 
   } 
+  
 }
 
 void TempCompare()

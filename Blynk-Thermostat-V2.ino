@@ -105,7 +105,10 @@ bool cancelKey;
 #define humVPin              V4   // realtime humidity value
 #define pressureVPin         V5   // realtime pressure value
 #define gassVPin             V6   // realtime gass readings value
-#define airQuality           V7   // placeholder for air quality 
+#define airQualityVPin       V8   // placeholder for air quality
+#define dewPointVPin         V9   // placeholder for air quality
+
+ 
 
 // LED widgets used for bynary monitoring
 WidgetLED  ledHeatingStatus(V30);
@@ -310,6 +313,9 @@ float h = 0;
 float p = 0;
 float g = 0;
 float a = 0;
+float dewPoint;
+float heatIndex;
+float cr;
 
 bool scheduled;
 bool GPSTrigger;
@@ -475,6 +481,11 @@ BLYNK_CONNECTED() {
   Blynk.syncVirtual(locationVPin);
   Blynk.syncVirtual(setModeVPin);
   Blynk.syncVirtual(referenceZoneVPin); // Check the refference temperature settings
+  Blynk.syncVirtual(EnableLocalVpin);
+  Blynk.syncVirtual(EnableRoom1Vpin);
+  Blynk.syncVirtual(EnableRoom2Vpin);
+  Blynk.syncVirtual(EnableRoom3Vpin);
+  Blynk.syncVirtual(referenceZoneVPin);
     // Synchronize time on connection
 //  OfflineTime();
 //  delay(100);
@@ -500,11 +511,12 @@ void PeriodicSync()
     // Push to the server
     Blynk.virtualWrite(tempVPin, temp);
     Blynk.virtualWrite(humVPin, h);
-    
-    Blynk.virtualWrite(tempSetVPin, tempset);
-    
+    Blynk.virtualWrite(dewPointVPin, dewPoint);
     Blynk.virtualWrite(pressureVPin, p);
     Blynk.virtualWrite(gassVPin, g);
+     
+    Blynk.virtualWrite(tempSetVPin, tempset);
+    
 //    Blynk.virtualWrite(tempSetVPin, tempset); //only after the local storage in the memory
     Blynk.virtualWrite(wifiSignalVPin, signalQuality);
     Blynk.virtualWrite(referenceTempVPin, referenceTemp);// reference temperature
@@ -561,6 +573,8 @@ void ReadBME680()
   h = (bme.humidity);
   g = (bme.gas_resistance / 1000.0);
   a = (bme.readAltitude(SEALEVELPRESSURE_HPA));
+  dewPoint =  (temp - (14.55 + 0.114 * temp) * (1 - (0.01 * h)) - pow(((2.5 + 0.007 * temp) * (1 - (0.01 * h))),3) - (15.9 + 0.117 * temp) * pow((1 - (0.01 * h)), 14));
+  Serial.println("DewPoint=" + String(dewPoint));
 }
 
 void RemoteSensorsCheck() 
