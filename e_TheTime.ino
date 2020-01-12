@@ -20,49 +20,49 @@ void OfflineTime()
   switch (OfflineRTC.dayOfWeek)// Friendly printout the weekday
   {
     case MON:
-      Serial.print("MON");
+      Serial.print("MON ");
       today = 2;
       yesterday = 1; // Sunday
       tomorrow = 3;  //Tuesday
       break;
     case TUE:
-      Serial.print("TUE");
+      Serial.print("TUE ");
       today = 3;
       yesterday = 2; //Monday
       tomorrow = 4;  //Wednesday
       break;
     case WED:
-      Serial.print("WED");
+      Serial.print("WED ");
       today = 4;
       yesterday = 3; //Tuesday
       tomorrow = 5;  //Thursday
       break;
     case THU:
-      Serial.print("THU");
+      Serial.print("THU ");
       today = 5;
       yesterday = 4; // Wed
       tomorrow = 6;  // Fri
       break;
     case FRI:
-      Serial.print("FRI");
+      Serial.print("FRI ");
       today = 6;
       yesterday = 5; // Thu
       tomorrow = 7;  // Sat
       break;
     case SAT:
-      Serial.print("SAT");
+      Serial.print("SAT ");
       today = 7;
       yesterday = 6; // Fri
       tomorrow = 1; // Sun
       break;
     case SUN:
-      Serial.print("SUN");
+      Serial.print("SUN ");
       today = 1;
       yesterday = 7; // Sat
       tomorrow = 2; // Monday
       break;
   }
-  
+  Serial.println();
   
   // These are required for Interval Check 
   Hour = OfflineRTC.hour;

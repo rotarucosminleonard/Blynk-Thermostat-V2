@@ -81,7 +81,7 @@ void checkTimeInterval()
       preheating = 1;
     }
     Serial.println();
-    Serial.print("Printing the time before checking the interval:");
+    Serial.print("Printing the time before checking the interval: ");
     Serial.println(String(Hour) + ":" + String(Minute) + ":" + String(second()));
     Serial.println();
     

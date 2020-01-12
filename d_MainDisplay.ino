@@ -51,10 +51,10 @@ void mainDisplay()
       
     ucg.print(":");
     if ((OfflineRTC.minute) < 10)    {
-      ucg.print( "0"+ String(OfflineRTC.minute, DEC));
+      ucg.print( "0"+ String(OfflineRTC.minute, DEC) + String("  "));
     }
     else {
-      ucg.print(String(OfflineRTC.minute, DEC));
+      ucg.print(String(OfflineRTC.minute, DEC) + String("  "));
     }
       
     ucg.setFont(ucg_font_5x8_mr);

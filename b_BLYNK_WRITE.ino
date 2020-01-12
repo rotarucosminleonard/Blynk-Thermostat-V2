@@ -373,7 +373,10 @@ BLYNK_WRITE(referenceZoneVPin)
         Serial.println("Room3 is selected");
         break;
       } 
-  } 
+  }
+  if (SingleRoomMode == 1) {
+    referenceZone = 1;
+  }
 }
 
 

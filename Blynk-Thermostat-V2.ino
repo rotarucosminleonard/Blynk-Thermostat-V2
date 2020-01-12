@@ -5,11 +5,14 @@ in order to work offline when the connection to the server drops. It will be abl
 The output command for the heating device can be adjusted for the needs. I am currently using 433mhz modules from ebay 
 for wireless transmission to the heating system and the relay for trggering it. The local time is updated from the server 
 automatically and kept by the rtc module.
+  Features:
+  - 
  */
 
 
 #define NAMEandVERSION "ESP32_Thermostat V2.83"
 
+bool SingleRoomMode = 0; // Set this to 1 if you decide not to use Remote Sensors
 float tempDrop = 0.4;    // temperature difference required to start the heating again
 float tempOvershoot = 0.2; // temperature difference to stop the heating before reaching the temperature set
 
@@ -17,8 +20,8 @@ float tempOvershoot = 0.2; // temperature difference to stop the heating before 
 
 //#define BLYNK_DEBUG
 
-#define BLYNK_TIMEOUT_MS  500  // must be BEFORE BlynkSimpleEsp8266.h doesn't work !!!
-#define BLYNK_HEARTBEAT   17   // must be BEFORE BlynkSimpleEsp8266.h works OK as 17s
+#define BLYNK_TIMEOUT_MS  2000  // must be BEFORE BlynkSimpleEsp8266.h doesn't work !!! save value 500
+#define BLYNK_HEARTBEAT   30   // must be BEFORE BlynkSimpleEsp8266.h save value is 17s
 #define BLYNK_PRINT Serial    
 
 #include <WiFi.h>
@@ -139,7 +142,7 @@ WidgetLED     ledGPSTrigger(V33);
 //remote temperature
 
 #define referenceZoneVPin   V17 // temperature from which room
-int referenceZone = 1;
+int referenceZone = 1; 
 
 #define room1Vpin V51
 #define room2Vpin V52
@@ -150,18 +153,18 @@ int referenceZone = 1;
 #define EnableRoom3Vpin V56
 #define EnableLocalVpin V50
 
-bool EnableRoom1;
-bool EnableRoom2;
-bool EnableRoom3;
-bool EnableLocal;
+bool EnableRoom1 = 0;
+bool EnableRoom2 = 0;
+bool EnableRoom3 = 0;
+bool EnableLocal = 1;
 
 #define HBroom1Vpin V61
 #define HBroom2Vpin V62
 #define HBroom3Vpin V63
 
-float room1Temp;
-float room2Temp;
-float room3Temp;
+float room1Temp = 99;
+float room2Temp = 99;
+float room3Temp = 99;
 
 bool HBroom1 = 1;
 bool HBroom2 = 1;
@@ -337,6 +340,7 @@ bool interval;
 
 
 void setup() {
+
   pinMode(RELAYoNpin, OUTPUT); 
   pinMode(RELAYoFFpin, OUTPUT); 
   digitalWrite(RELAYoNpin, HIGH);
@@ -386,7 +390,7 @@ void setup() {
   StopMinute7 = EEPROM.read(StopMinute7Address); 
   
 
-  delay(100);
+delay(100);
   ucg.begin(UCG_FONT_MODE_TRANSPARENT);
   ucg.clearScreen();
   //ucg.undoRotate(); break;
@@ -405,6 +409,9 @@ void setup() {
   //mcp.begin(0x20);      // use custom address
   
   OfflineRTC.begin();
+  //delay(1000);
+  OfflineTime();
+  
 //  OfflineRTC.fillByYMD(2013,1,19);//Jan 19,2013
 //  OfflineRTC.fillByHMS(15,28,30);//15:28 30"
 //  OfflineRTC.fillDayOfWeek(SAT);//Saturday
@@ -451,7 +458,7 @@ void setup() {
   bme.setGasHeater(320, 150); // 320*C for 150 ms
   ReadBME680(); 
   CheckConnection();// It needs to run first to initiate the connection.Same function works for checking the connection!
-  timer.setInterval(22000L, CheckConnection); 
+  timer.setInterval(60000L, CheckConnection); 
   //  timer.setInterval(1000L, myTimerEvent);    
   timer.setInterval(10100L, ReadBME680);
   timer.setInterval(5000L, BlinkTheLed);  
@@ -460,7 +467,7 @@ void setup() {
   timer.setInterval(100000L,  OnlineTime);
   timer.setInterval(8000L, PeriodicSync);
   timer.setInterval(20000L, HeatingLogic);
-  timer.setInterval(120000L, RemoteSensorsCheck);
+  timer.setInterval(60000L, RemoteSensorsCheck);
 }
 
 void loop() {
@@ -491,8 +498,8 @@ BLYNK_CONNECTED() {
 //  delay(100);
 //  OfflineTime();
 //  delay(100);
-  OnlineTime();
   OfflineTime();
+  OnlineTime();
   syncTheTime();
   Blynk.syncVirtual(timeInterval1VPin);
   Blynk.syncVirtual(timeInterval2VPin);
@@ -593,6 +600,7 @@ void RemoteSensorsCheck()
     Blynk.setProperty(EnableRoom1Vpin, "onBackColor", "#D3435C"); // Red Background color
     // NOT Good To USE
     room1Status = 0;
+    room1Temp = 99;
   }
 
   if (HBroom2 == 1)
@@ -609,6 +617,7 @@ void RemoteSensorsCheck()
     Blynk.setProperty(EnableRoom2Vpin, "onBackColor", "#D3435C"); // Red Background color
     // NOT Good To USE
     room2Status = 0;
+    room2Temp = 99;
   }
 
   if (HBroom3 == 1)
@@ -625,6 +634,7 @@ void RemoteSensorsCheck()
     Blynk.setProperty(EnableRoom3Vpin, "onBackColor", "#D3435C"); // Red Background color
     // NOT Good To USE
     room3Status = 0;
+    room3Temp = 99;
   }
   
 }

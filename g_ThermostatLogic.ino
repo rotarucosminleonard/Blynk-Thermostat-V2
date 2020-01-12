@@ -78,9 +78,10 @@ void HeatingLogic()
 
 void ReferenceHeatingZone()
 {
+  Serial.println("referenceZone = " + String(referenceZone));
+  referenceTemp = temp; // Local temperature as refference by default.It will be overwritten later on the right conditions
   switch (referenceZone)
   {
-  
       case 1: { // Item 1
         Serial.println("Local Temperature selected");
         referenceTemp = temp;
@@ -88,40 +89,66 @@ void ReferenceHeatingZone()
       }
       case 2: { // Item 2
         Serial.println("Multiple Rooms Mode is selected");
-        //referenceTemp = temp; // temporary unavailable
-        // check if any of the selected temperatures is bellow the tempset
-        
-        if (EnableLocal == 1){
-              if (temp <= bottomTreshold){
-                referenceTemp = temp; 
-              }          
+        boolean enabledRoomFound = false;   
+        if (!EnableLocal && !EnableRoom1 && !EnableRoom2 && !EnableRoom3)
+        {
+          Serial.println("No rooms enabled.");
+          enabledRoomFound = false;
+          //referenceTemp = temp;
+          //EnableLocal = 1;
         }
-        if (EnableRoom1){
-          if (room1Status == 1)
+        else // At lest one room is enabled
+        {
+          if (EnableLocal == true){
+            Serial.println("Local is Enabled");
+            if (temp <= referenceTemp){
+              referenceTemp = temp; 
+              Serial.println("Local referenceTemp= " + String(referenceTemp)); 
+              enabledRoomFound = true;
+            }
+          }
+          if (EnableRoom1 == true){
+            Serial.println("Room 1 is enabled");
+            if (room1Status == true)
             {
-              if (room1Temp <= bottomTreshold){
-                referenceTemp = room1Temp; 
+              if (room1Temp <= referenceTemp){
+              referenceTemp = room1Temp; 
+              Serial.println("Room1 referenceTemp= " + String(room1Temp));
+              enabledRoomFound = true;
               }        
             }     
-        }
-        if (EnableRoom2){
-          if (room2Status == 1)
+          }
+          if (EnableRoom2 == true){
+            Serial.println("Room 2 is enabled");
+            if (room2Status == true)
             {
-              if (room2Temp <= bottomTreshold){
-                referenceTemp = room2Temp; 
+              if (room2Temp <= referenceTemp){
+              referenceTemp = room2Temp;
+              Serial.println("Room2 referenceTemp= " + String(room2Temp));
+              enabledRoomFound = true;
               }        
             } 
-        }
-        if (EnableRoom3 == 1){
-          if (room3Status == 1)
+          }
+          if (EnableRoom3 == true){
+            Serial.println("Room 3 is enabled");
+            if (room3Status == true)
             {
-              if (room3Temp <= bottomTreshold){
-                referenceTemp = room3Temp; 
+              if (room3Temp <= referenceTemp){
+              referenceTemp = room3Temp;
+              Serial.println("Room3 referenceTemp= " + String(room3Temp));
+              enabledRoomFound = true;
               }        
             } 
+          }
         }
-
-        break;
+        if (enabledRoomFound == false)
+        { 
+          //Failsafe for the situation when Local is DISABLED and no other remote Room sensors are available
+          referenceTemp = temp;
+          EnableLocal = 1;
+          Serial.println("No remote sensors are enabled or online! Switch to Local");
+        }
+        break;  
       }
       case 3: { // Item 3
         Serial.println("Room1 is selected");
