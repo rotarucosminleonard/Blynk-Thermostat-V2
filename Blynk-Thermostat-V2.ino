@@ -10,7 +10,7 @@ automatically and kept by the rtc module.
  */
 
 
-#define NAMEandVERSION "ESP32_Thermostat V2.83"
+#define NAMEandVERSION "ESP32_Thermostat V2.84"
 
 bool SingleRoomMode = 0; // Set this to 1 if you decide not to use Remote Sensors
 float tempDrop = 0.4;    // temperature difference required to start the heating again
@@ -88,6 +88,8 @@ bool prevRightState;
 bool prevOkState;
 #define CANCELpin 5
 bool prevCancelState;
+
+int t;
 
 #define RELAYoNpin 33
 #define RELAYoFFpin 13
@@ -174,11 +176,6 @@ bool room1Status = 1;
 bool room2Status = 1;
 bool room3Status = 1;
 
-// BME reading variables
-short int delayaftergas = 0;
-short int readings = 0;
-bool timetomeasureGas = 0;
-bool gasjustmeasured = 0;
 
 int counter = 0;
 signed short int rssi = 0;
@@ -186,7 +183,8 @@ signed short int signalQuality = 0;
 
 // menu
 int position;
-bool menu;
+int menu;
+int cursorpos;
 int value;
 bool save;
 
@@ -319,6 +317,8 @@ float a = 0;
 float dewPoint;
 float heatIndex;
 float cr;
+float LastTemp;
+float PrevTempset;
 
 bool scheduled;
 bool GPSTrigger;
@@ -400,7 +400,7 @@ delay(100);
 
   WiFi.setHostname(NAMEandVERSION);
   WiFi.mode(WIFI_STA);
-  WiFi.config(arduino_ip, gateway_ip, subnet_mask);
+  //WiFi.config(arduino_ip, gateway_ip, subnet_mask);
   //Blynk.config(auth, IPAddress(192,168,0,3), port);  // I am using the local Server
   Blynk.config(auth, serveraddr, port);  // I am using the local Server
 
@@ -468,6 +468,7 @@ delay(100);
   timer.setInterval(8000L, PeriodicSync);
   timer.setInterval(20000L, HeatingLogic);
   timer.setInterval(60000L, RemoteSensorsCheck);
+  //timer.setInterval(60002L, tempStability);
 }
 
 void loop() {
@@ -582,6 +583,35 @@ void ReadBME680()
   a = (bme.readAltitude(SEALEVELPRESSURE_HPA));
   dewPoint =  (temp - (14.55 + 0.114 * temp) * (1 - (0.01 * h)) - pow(((2.5 + 0.007 * temp) * (1 - (0.01 * h))),3) - (15.9 + 0.117 * temp) * pow((1 - (0.01 * h)), 14));
   Serial.println("DewPoint=" + String(dewPoint));
+  
+}
+
+void tempStability()
+{
+  float tempDif = 0;
+  tempDif = temp - LastTemp;
+  LastTemp = temp;
+  Serial.println("Tempdif = " + String(tempDif));
+  if (tempDif >= 1) {
+    Serial.print("Heating to fast! Temperature = " + String(temp));
+    Blynk.notify("Heating to fast! Temperature = " + String(temp));
+    Blynk.email("rotarucosminleonard@gmail.com", "Temperature Alert!", "Temperature is increasing to fast at home!");
+  }
+  else if (tempDif <= -0.3)
+  {
+    Serial.print("The windows are open. Stop heating for now.");
+    Blynk.notify("The windows are open. Stop heating for now.");
+    PrevTempset = tempset;
+    tempset = 10;
+  }
+  if (tempset == 10){
+    if (tempDif <= 0.2 || tempDif > -0.3 ){
+      Serial.print("The windows are Closed now. Start heating again.");
+      Blynk.notify("The windows are Closed now. Start heating again.");
+      tempset = PrevTempset;
+    }
+  }
+
 }
 
 void RemoteSensorsCheck() 

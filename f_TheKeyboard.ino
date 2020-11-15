@@ -1,5 +1,6 @@
 void keyboard()
 {
+
   leftKey = mcp.digitalRead(LEFTpin);
   upKey = mcp.digitalRead(UPpin);
   downKey = mcp.digitalRead(DOWNpin);
@@ -25,7 +26,7 @@ void keyboard()
         mainDisplay();  
       }
       else {
-        position ++;
+        cursorpos ++;
         delay(50);        
       }
 
@@ -51,7 +52,7 @@ void keyboard()
         mainDisplay();      
       }
       else {
-        position --;
+        cursorpos --;
         delay(50);      
       }
 
@@ -86,7 +87,21 @@ void keyboard()
   rightKey = mcp.digitalRead(RIGHTpin);
   if (rightKey != prevRightState) {
     if (rightKey == LOW) {
-      value++;
+      if (menu == 0){
+        if (scheduled == 1){
+          scheduled = 0;
+          EEPROM.write(scheduledaddress, scheduled);
+          EEPROM.commit();            
+        }
+        else {
+          scheduled = 1;
+          EEPROM.write(scheduledaddress, scheduled);
+          EEPROM.commit();     
+        }
+      }
+      else {
+        value++;        
+      }
     }
     prevRightState = rightKey;
   }
@@ -101,6 +116,7 @@ void keyboard()
       }
       else {
         // save function
+        //selectt=1;
       }
 
     }
@@ -111,9 +127,9 @@ void keyboard()
   cancelKey = mcp.digitalRead(CANCELpin);
   if (cancelKey != prevCancelState) {
     if (cancelKey == LOW) {
-      if (menu == 1){
+      if (menu >= 0){
         // back up a menu  
-        menu = 0;
+        menu = menu-1;
       }
     ucg.clearScreen();
     mainDisplay();
