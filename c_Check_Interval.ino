@@ -173,11 +173,16 @@ void checkTimeInterval()
         Serial.println("108");
       }
     }
-    
-    if (Hour > StartHour && Hour < StopHour)
+
+    //sameday interval passed
+    if (Hour > StartHour && Hour < StopHour) //
     {
       interval = 1;
       Serial.println("109");
+    }
+    else if (Hour > StartHour && Hour > StopHour) {
+      interval = 0;
+      Serial.println("110");
     }
   }
   
